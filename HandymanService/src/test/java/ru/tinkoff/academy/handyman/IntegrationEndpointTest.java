@@ -1,4 +1,4 @@
-package ru.tinkoff.academy.rancher.controller;
+package ru.tinkoff.academy.handyman;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class SystemControllerTest {
+class IntegrationEndpointTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -32,6 +32,6 @@ class SystemControllerTest {
 
         ResultActions response = mockMvc.perform(get(path));
 
-        response.andExpect(status().isOk()).andExpect(content().json("{' RancherService': 'OK'}"));
+        response.andExpect(status().isOk()).andExpect(content().json("{'HandymanService': 'OK'}"));
     }
 }
