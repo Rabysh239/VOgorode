@@ -1,5 +1,5 @@
 server:
-  port: 8002
+  port: 8082
 management:
   endpoints:
     web:
@@ -9,3 +9,13 @@ management:
       path-mapping:
         prometheus: /metrics
         info: /actuator/info
+grpc:
+  client:
+    HandymanService:
+      address: "localhost:8090"
+      negotiationType: plaintext
+    RancherService:
+      address: "localhost:8091"
+      negotiationType: plaintext
+service:
+  listOfNames: HandymanService, RancherService

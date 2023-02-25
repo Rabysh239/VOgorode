@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
-class IntegrationEndpointTest {
+class IntegrationRouteTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
