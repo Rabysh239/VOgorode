@@ -53,6 +53,6 @@ class IntegrationRouteTest {
                 .get(path)
                 .then()
                 .statusCode(OK.value())
-                .expect(jsonPath("$.LandscapeService").value("OK"));
+                .expect(jsonPath("$.RancherService").value("OK"));
     }
 }

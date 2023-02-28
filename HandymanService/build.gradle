@@ -26,16 +26,16 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'io.micrometer:micrometer-registry-prometheus'
     implementation 'org.projectlombok:lombok:1.18.24'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework:spring-test:6.0.5'
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'io.rest-assured:spring-mock-mvc'
     implementation "com.google.protobuf:protobuf-java:${protobufVersion}"
     implementation "io.grpc:grpc-all:${grpcVersion}"
     implementation "com.google.protobuf:protoc:${protobufVersion}"
     implementation "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
     implementation 'net.devh:grpc-server-spring-boot-starter:2.14.0.RELEASE'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework:spring-test:5.3.24'
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'io.rest-assured:spring-mock-mvc'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testImplementation 'org.mockito:mockito-core:5.1.1'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'

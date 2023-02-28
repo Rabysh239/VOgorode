@@ -1,29 +1,23 @@
 package ru.tinkoff.academy.landscape.service;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.info.BuildProperties;
-
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.util.ReflectionTestUtils.setField;
+import static ru.tinkoff.academy.landscape.ReadinessStatus.NOK;
+import static ru.tinkoff.academy.landscape.ReadinessStatus.OK;
 
 class SystemServiceTest {
-    private final BuildProperties buildProperties = mock(BuildProperties.class);
-    private final SystemService service = new SystemService(buildProperties);
+    private final SystemService service = new SystemService();
 
     @Test
-    void getStatus() {
-        assertEquals("OK", service.getStatus());
+    void getStatusWhenNotReady() {
+        assertEquals(NOK, service.getStatus());
     }
 
     @Test
-    void getReadiness() {
-        when(buildProperties.getName()).thenReturn("name");
+    void getStatusWhenReady() {
+        SystemService.doReady();
 
-        assertEquals(Map.of("name", "OK"), service.getReadiness());
-
-        verify(buildProperties).getName();
+        assertEquals(OK, service.getStatus());
     }
 }
