@@ -1,20 +1,24 @@
 package ru.tinkoff.academy.rancher.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.info.BuildProperties;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class SystemService {
-    private final BuildProperties buildProperties;
+    private static volatile boolean isReadiness = false;
 
     /**
-     * @return map of entry = serviceName : "OK"
+     * @return {@link SystemService#isReadiness}
      */
-    public Map<String, String> readiness() {
-        return Map.of(buildProperties.getName(), "OK");
+    public boolean getReadiness() {
+        return isReadiness;
+    }
+
+    /**
+     * Changes {@link SystemService#isReadiness} to true.
+     */
+    public static void doReady() {
+        isReadiness = true;
     }
 }
