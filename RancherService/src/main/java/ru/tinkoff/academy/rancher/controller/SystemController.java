@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.tinkoff.academy.rancher.ReadinessStatus;
+import ru.tinkoff.academy.rancher.service.PropertyService;
 import ru.tinkoff.academy.rancher.service.SystemService;
 
 import java.util.Map;
@@ -13,12 +15,14 @@ import java.util.Map;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.http.ResponseEntity.status;
+import static ru.tinkoff.academy.rancher.ReadinessStatus.OK;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/system")
 public class SystemController {
     private final SystemService service;
+    private final PropertyService propertyService;
     private final BuildProperties buildProperties;
 
     /**
@@ -30,11 +34,15 @@ public class SystemController {
     }
 
     /**
-     * @return 200 and map of entry = serviceName : "OK" if readiness else 503
+     * @return if isGrpcStatus 200 serviceName : grpcStatus else serviceName : status if readiness else 503
      */
     @GetMapping("/readiness")
     public ResponseEntity<Map<String, String>> getReadiness() {
-        return service.getReadiness() ? ok(Map.of(buildProperties.getName(), "OK")) : status(SERVICE_UNAVAILABLE).build();
+        if (propertyService.getIsGrpcStatus()) {
+            return ok(Map.of(buildProperties.getName(), service.getGrpcStatus().name()));
+        }
+        ReadinessStatus readinessStatus = service.getStatus();
+        return readinessStatus == OK ? ok(Map.of(buildProperties.getName(), readinessStatus.toString())) : status(SERVICE_UNAVAILABLE).build();
     }
 }
 

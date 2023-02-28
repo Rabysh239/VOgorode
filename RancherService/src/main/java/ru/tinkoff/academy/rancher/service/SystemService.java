@@ -1,58 +1,38 @@
 package ru.tinkoff.academy.rancher.service;
 
+import io.grpc.ConnectivityState;
 import io.grpc.ManagedChannel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.info.BuildProperties;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.academy.rancher.BuildInfo;
+import ru.tinkoff.academy.rancher.ReadinessStatus;
+
+import static ru.tinkoff.academy.rancher.ReadinessStatus.NOK;
+import static ru.tinkoff.academy.rancher.ReadinessStatus.OK;
 
 @Service
 @RequiredArgsConstructor
 public class SystemService {
-    private static volatile boolean isReadiness = false;
-    private final BuildProperties buildProperties;
+    private static volatile boolean isReady = false;
     private final ManagedChannel managedChannel;
-    @Value("${status.grpc.enabled}")
-    private Boolean isGrpcStatus;
 
     /**
-     * @return if isGrpcStatus == true returns statusGRPC else "OK"
+     * @return if {@link SystemService#isReady} == true "OK" else "NOK".
+     */
+    public ReadinessStatus getStatus() {
+        return isReady ? OK : NOK;
+    }
+
+    /**
      * @see ManagedChannel#getState(boolean)
      */
-    public String getStatus() {
-        return isGrpcStatus ? getStatusGrpc() : "OK";
-    }
-
-    private String getStatusGrpc() {
-        return managedChannel.getState(true).name();
+    public ConnectivityState getGrpcStatus() {
+        return managedChannel.getState(true);
     }
 
     /**
-     * @return {@link SystemService#isReadiness}
-     */
-    public boolean getReadiness() {
-        return isReadiness;
-    }
-
-    /**
-     * Changes {@link SystemService#isReadiness} to true.
+     * Changes {@link SystemService#isReady} to true.
      */
     public static void doReady() {
-        isReadiness = true;
-    }
-
-    /**
-     * Fills build info from {@link BuildProperties}
-     *
-     * @return filed {@link BuildInfo}
-     */
-    public BuildInfo getBuildInfo() {
-        return BuildInfo.builder()
-                .artifact(buildProperties.getArtifact())
-                .name(buildProperties.getName())
-                .group(buildProperties.getGroup())
-                .version(buildProperties.getVersion())
-                .build();
+        isReady = true;
     }
 }

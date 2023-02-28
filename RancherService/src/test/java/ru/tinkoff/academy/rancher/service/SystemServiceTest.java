@@ -1,72 +1,36 @@
 package ru.tinkoff.academy.rancher.service;
 
-import io.grpc.ConnectivityState;
 import io.grpc.ManagedChannel;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.info.BuildProperties;
-import ru.tinkoff.academy.rancher.BuildInfo;
 
-import java.util.Map;
-
+import static io.grpc.ConnectivityState.READY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.util.ReflectionTestUtils.setField;
+import static ru.tinkoff.academy.rancher.ReadinessStatus.NOK;
+import static ru.tinkoff.academy.rancher.ReadinessStatus.OK;
 
 class SystemServiceTest {
-    private final BuildProperties buildProperties = mock(BuildProperties.class);
     private final ManagedChannel managedChannel = mock(ManagedChannel.class);
-    private final SystemService service = new SystemService(buildProperties, managedChannel);
+    private final SystemService service = new SystemService(managedChannel);
 
     @Test
-    void getStatus() {
-        setField(service, "isGrpcStatus", false);
-
-        assertEquals("OK", service.getStatus());
+    void getStatusWhenNotReady() {
+        assertEquals(NOK, service.getStatus());
     }
 
     @Test
-    void getStatusGRPC() {
-        setField(service, "isGrpcStatus", true);
-        var connectivityState = ConnectivityState.READY;
+    void getStatusWhenReady() {
+        SystemService.doReady();
 
-        when(managedChannel.getState(anyBoolean())).thenReturn(connectivityState);
+        assertEquals(OK, service.getStatus());
+    }
 
-        assertEquals("READY", service.getStatus());
+    @Test
+    void getStatusGrpc() {
+        when(managedChannel.getState(anyBoolean())).thenReturn(READY);
+
+        assertEquals(READY, service.getGrpcStatus());
 
         verify(managedChannel).getState(true);
-    }
-
-    @Test
-    void getReadiness() {
-        setField(service, "isGrpcStatus", false);
-
-        when(buildProperties.getName()).thenReturn("name");
-
-        assertEquals(Map.of("name", "OK"), service.getReadiness());
-
-        verify(buildProperties).getName();
-    }
-
-    @Test
-    void getBuildInfo() {
-        when(buildProperties.getArtifact()).thenReturn("artifact");
-        when(buildProperties.getName()).thenReturn("name");
-        when(buildProperties.getGroup()).thenReturn("group");
-        when(buildProperties.getVersion()).thenReturn("version");
-
-        assertEquals(
-                BuildInfo.builder()
-                        .artifact("artifact")
-                        .name("name")
-                        .group("group")
-                        .version("version")
-                        .build(),
-                service.getBuildInfo()
-        );
-
-        verify(buildProperties).getArtifact();
-        verify(buildProperties).getName();
-        verify(buildProperties).getGroup();
-        verify(buildProperties).getVersion();
     }
 }
