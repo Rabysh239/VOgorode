@@ -1,37 +1,56 @@
 package ru.tinkoff.academy.landscape;
 
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = RANDOM_PORT)
+@RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 class IntegrationEndpointTest {
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
-    @Test
-    void liveness() throws Exception {
-        var path = "/system/liveness";
-
-        ResultActions response = mockMvc.perform(get(path));
-
-        response.andExpect(status().isOk());
+    @BeforeEach
+    public void initialiseRestAssuredMockMvcWebApplicationContext() {
+        RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
+        RestAssuredMockMvc.mockMvc(mockMvc);
     }
 
     @Test
-    void readiness() throws Exception {
+    void liveness() {
+        var path = "/system/liveness";
+
+        given()
+                .when()
+                .get(path)
+                .then()
+                .statusCode(OK.value());
+    }
+
+    @Test
+    void readiness() {
         var path = "/system/readiness";
 
-        ResultActions response = mockMvc.perform(get(path));
-
-        response.andExpect(status().isOk()).andExpect(content().json("{'LandscapeService': 'OK'}"));
+        given()
+                .when()
+                .get(path)
+                .then()
+                .statusCode(OK.value())
+                .expect(jsonPath("$.LandscapeService").value("OK"));
     }
 }
