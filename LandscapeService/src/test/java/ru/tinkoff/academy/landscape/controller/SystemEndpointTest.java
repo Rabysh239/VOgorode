@@ -1,4 +1,4 @@
-package ru.tinkoff.academy.handyman;
+package ru.tinkoff.academy.landscape.controller;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
-class IntegrationEndpointTest {
+class SystemEndpointTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -51,6 +51,6 @@ class IntegrationEndpointTest {
                 .get(path)
                 .then()
                 .statusCode(OK.value())
-                .expect(jsonPath("$.HandymanService").value("OK"));
+                .expect(jsonPath("$.LandscapeService").value("OK"));
     }
 }
