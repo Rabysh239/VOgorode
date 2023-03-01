@@ -10,6 +10,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.ResponseEntity.ok;
 
 class ServiceStatusControllerTest {
     private final ServiceStatusService service = mock(ServiceStatusService.class);
@@ -29,14 +30,14 @@ class ServiceStatusControllerTest {
                         ))
         );
 
-        assertEquals(Map.of("RancherService",
+        assertEquals(ok(Map.of("RancherService",
                         List.of(ServiceStatus.builder()
                                 .host("localhost:8091")
                                 .status("OK")
                                 .artifact("RancherService")
                                 .group("ru.tinkoff.academy")
                                 .version("0.1.1-SNAPSHOT")
-                                .build())),
+                                .build()))),
                 controller.getStatuses());
     }
 }
