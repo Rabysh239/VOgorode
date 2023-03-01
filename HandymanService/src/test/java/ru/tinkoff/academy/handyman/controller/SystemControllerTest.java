@@ -63,4 +63,9 @@ class SystemControllerTest {
         verify(buildProperties).getName();
         verify(service).getGrpcStatus();
     }
+
+    @Test
+    void forceMalfunction() {
+        assertEquals(HttpStatus.OK, controller.forceMalfunction(true).getStatusCode());
+    }
 }

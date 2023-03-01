@@ -45,4 +45,9 @@ class SystemControllerTest {
 
         verify(service).getStatus();
     }
+
+    @Test
+    void forceMalfunction() {
+        assertEquals(HttpStatus.OK, controller.forceMalfunction(true).getStatusCode());
+    }
 }

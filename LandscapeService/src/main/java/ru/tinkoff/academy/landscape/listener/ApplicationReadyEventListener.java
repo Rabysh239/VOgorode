@@ -6,6 +6,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.academy.landscape.service.SystemService;
 
+import static ru.tinkoff.academy.landscape.service.SystemService.setIsReady;
+
 @Component
 @RequiredArgsConstructor
 public class ApplicationReadyEventListener {
@@ -15,6 +17,6 @@ public class ApplicationReadyEventListener {
      */
     @EventListener(ApplicationReadyEvent.class)
     public void changeReadinessStatus() {
-        SystemService.doReady();
+        setIsReady(true);
     }
 }

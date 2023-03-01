@@ -6,8 +6,9 @@ import org.junit.jupiter.api.Test;
 import static io.grpc.ConnectivityState.READY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import static ru.tinkoff.academy.rancher.ReadinessStatus.NOK;
-import static ru.tinkoff.academy.rancher.ReadinessStatus.OK;
+import static ru.tinkoff.academy.rancher.ReadinessStatus.*;
+import static ru.tinkoff.academy.rancher.service.SystemService.setIsMalfunction;
+import static ru.tinkoff.academy.rancher.service.SystemService.setIsReady;
 
 class SystemServiceTest {
     private final ManagedChannel managedChannel = mock(ManagedChannel.class);
@@ -15,14 +16,34 @@ class SystemServiceTest {
 
     @Test
     void getStatusWhenNotReady() {
+        setIsReady(false);
+        setIsMalfunction(false);
+
+        assertEquals(NOK, service.getStatus());
+    }
+
+    @Test
+    void getStatusWhenNotReadyMalfunction() {
+        setIsReady(false);
+        setIsMalfunction(true);
+
         assertEquals(NOK, service.getStatus());
     }
 
     @Test
     void getStatusWhenReady() {
-        SystemService.doReady();
+        setIsReady(true);
+        setIsMalfunction(false);
 
         assertEquals(OK, service.getStatus());
+    }
+
+    @Test
+    void getStatusWhenReadyMalfunction() {
+        setIsReady(true);
+        setIsMalfunction(true);
+
+        assertEquals(MALFUNCTION, service.getStatus());
     }
 
     @Test
