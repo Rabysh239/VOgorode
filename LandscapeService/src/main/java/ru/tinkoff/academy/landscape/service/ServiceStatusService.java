@@ -8,6 +8,7 @@ import net.devh.boot.grpc.client.channelfactory.GrpcChannelFactory;
 import net.devh.boot.grpc.client.config.GrpcChannelsProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ru.tinkoff.academy.landscape.conf.GRPCProperties;
 import ru.tinkoff.academy.landscape.data.ServiceStatus;
 import ru.tinkoff.proto.ReadinessResponse;
 import ru.tinkoff.proto.StatusServiceGrpc;
@@ -29,9 +30,7 @@ import static ru.tinkoff.proto.StatusServiceGrpc.newBlockingStub;
 public class ServiceStatusService {
     private final GrpcChannelsProperties grpcChannelsProperties;
     private final GrpcChannelFactory grpcChannelFactory;
-
-    @Value("${service.listOfNames}")
-    private String[] serviceNames;
+    private final GRPCProperties grpcProperties;
 
     /**
      * @return map of entries: serviceName to list of {@link ServiceStatus} of different instances
@@ -55,7 +54,7 @@ public class ServiceStatusService {
     }
 
     private String serviceNameMapper(String rawName) {
-        return stream(serviceNames).filter(rawName::startsWith).findFirst().orElse(null);
+        return stream(grpcProperties.getServiceNames()).filter(rawName::startsWith).findFirst().orElse(null);
     }
 
     private ServiceStatus getStatus(String serviceName) {
