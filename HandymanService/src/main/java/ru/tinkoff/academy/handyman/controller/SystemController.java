@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.http.ResponseEntity.status;
-import static ru.tinkoff.academy.handyman.data.ReadinessStatus.NOK;
 import static ru.tinkoff.academy.handyman.service.SystemService.setIsMalfunction;
 
 @RestController
@@ -35,7 +34,7 @@ public class SystemController {
     @GetMapping("/readiness")
     public ResponseEntity<Entry<String, String>> getReadiness() {
         Entry<String, String> readiness = service.getReadiness();
-        if (NOK.toString().equals(readiness.getValue())) {
+        if ("NOK".equals(readiness.getValue())) {
             return status(SERVICE_UNAVAILABLE).build();
         }
         return ok(readiness);
