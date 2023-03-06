@@ -12,8 +12,7 @@ import ru.tinkoff.academy.handyman.data.ReadinessStatus;
 import java.util.Map.Entry;
 
 import static java.util.Map.entry;
-import static ru.tinkoff.academy.handyman.data.ReadinessStatus.NOK;
-import static ru.tinkoff.academy.handyman.data.ReadinessStatus.OK;
+import static ru.tinkoff.academy.handyman.data.ReadinessStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -72,7 +71,7 @@ public class SystemService {
     }
 
     private ReadinessStatus getStatus() {
-        return isReady ? OK : NOK;
+        return isReady ? (isMalfunction ? MALFUNCTION : OK) : NOK;
     }
 
     private ConnectivityState getGrpcStatus() {

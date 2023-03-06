@@ -1,10 +1,9 @@
 package ru.tinkoff.academy.handyman.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.academy.handyman.service.SystemService;
 
 import java.util.Map.Entry;
@@ -13,9 +12,11 @@ import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.http.ResponseEntity.status;
 import static ru.tinkoff.academy.handyman.data.ReadinessStatus.NOK;
+import static ru.tinkoff.academy.handyman.service.SystemService.setIsMalfunction;
 
 @RestController
 @RequiredArgsConstructor
+@Log4j2
 @RequestMapping("/system")
 public class SystemController {
     private final SystemService service;

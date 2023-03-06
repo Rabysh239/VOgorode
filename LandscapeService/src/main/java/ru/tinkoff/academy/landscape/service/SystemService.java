@@ -8,8 +8,7 @@ import ru.tinkoff.academy.landscape.data.ReadinessStatus;
 import java.util.Map.Entry;
 
 import static java.util.Map.entry;
-import static ru.tinkoff.academy.landscape.data.ReadinessStatus.NOK;
-import static ru.tinkoff.academy.landscape.data.ReadinessStatus.OK;
+import static ru.tinkoff.academy.landscape.data.ReadinessStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +21,7 @@ public class SystemService {
      * @return if {@link SystemService#isReady} == true return OK else NOK
      */
     public ReadinessStatus getReadinessStatus() {
-        return isReady ? OK : NOK;
+        return isReady ? (isMalfunction ? MALFUNCTION : OK) : NOK;
     }
 
     /**
