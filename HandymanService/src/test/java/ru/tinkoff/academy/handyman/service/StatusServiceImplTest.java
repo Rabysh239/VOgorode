@@ -3,20 +3,18 @@ package ru.tinkoff.academy.handyman.service;
 import com.google.protobuf.Empty;
 import io.grpc.stub.StreamObserver;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.info.BuildProperties;
+import ru.tinkoff.academy.handyman.conf.GRPCProperties;
+import ru.tinkoff.academy.handyman.data.BuildInfo;
 import ru.tinkoff.proto.ReadinessResponse;
 import ru.tinkoff.proto.VersionResponse;
 
-import static io.grpc.ConnectivityState.READY;
 import static org.mockito.Mockito.*;
-import static ru.tinkoff.academy.handyman.ReadinessStatus.OK;
 
 class StatusServiceImplTest {
     private final SystemService systemService = mock(SystemService.class);
-    private final PropertyService propertyService = mock(PropertyService.class);
-    private final BuildProperties buildProperties = mock(BuildProperties.class);
+    private final GRPCProperties gRPCProperties = mock(GRPCProperties.class);
     private final Empty empty = mock(Empty.class);
-    private final StatusServiceImpl service = new StatusServiceImpl(systemService, propertyService, buildProperties);
+    private final StatusServiceImpl service = new StatusServiceImpl(systemService);
 
     @Test
     void getReadiness() {
@@ -24,8 +22,8 @@ class StatusServiceImplTest {
         var responseObserver = (StreamObserver<ReadinessResponse>) mock(StreamObserver.class);
         ReadinessResponse readinessResponse = ReadinessResponse.newBuilder().setStatus("OK").build();
 
-        when(propertyService.getIsGrpcStatus()).thenReturn(false);
-        when(systemService.getStatus()).thenReturn(OK);
+        when(gRPCProperties.getStatusEnabled()).thenReturn(false);
+        when(systemService.getReadinessStatus()).thenReturn("OK");
 
         service.getReadiness(empty, responseObserver);
 
@@ -40,8 +38,8 @@ class StatusServiceImplTest {
         var responseObserver = (StreamObserver<ReadinessResponse>) mock(StreamObserver.class);
         ReadinessResponse readinessResponse = ReadinessResponse.newBuilder().setStatus("READY").build();
 
-        when(propertyService.getIsGrpcStatus()).thenReturn(true);
-        when(systemService.getGrpcStatus()).thenReturn(READY);
+        when(gRPCProperties.getStatusEnabled()).thenReturn(true);
+        when(systemService.getReadinessStatus()).thenReturn("READY");
 
         service.getReadiness(empty, responseObserver);
 
@@ -54,6 +52,7 @@ class StatusServiceImplTest {
     void getVersion() {
         @SuppressWarnings("unchecked")
         var responseObserver = (StreamObserver<VersionResponse>) mock(StreamObserver.class);
+        var buildInfo = mock(BuildInfo.class);
         VersionResponse versionResponse = VersionResponse.newBuilder()
                 .setArtifact("artifact")
                 .setName("name")
@@ -61,17 +60,18 @@ class StatusServiceImplTest {
                 .setVersion("version")
                 .build();
 
-        when(buildProperties.getArtifact()).thenReturn("artifact");
-        when(buildProperties.getName()).thenReturn("name");
-        when(buildProperties.getGroup()).thenReturn("group");
-        when(buildProperties.getVersion()).thenReturn("version");
+        when(systemService.getBuildInfo()).thenReturn(buildInfo);
+        when(buildInfo.getArtifact()).thenReturn("artifact");
+        when(buildInfo.getName()).thenReturn("name");
+        when(buildInfo.getGroup()).thenReturn("group");
+        when(buildInfo.getVersion()).thenReturn("version");
 
         service.getVersion(empty, responseObserver);
 
-        verify(buildProperties).getArtifact();
-        verify(buildProperties).getName();
-        verify(buildProperties).getGroup();
-        verify(buildProperties).getVersion();
+        verify(buildInfo).getArtifact();
+        verify(buildInfo).getName();
+        verify(buildInfo).getGroup();
+        verify(buildInfo).getVersion();
         verify(responseObserver).onNext(versionResponse);
         verify(responseObserver).onCompleted();
         verifyNoInteractions(empty);

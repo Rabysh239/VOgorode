@@ -28,8 +28,6 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.24'
     implementation "com.google.protobuf:protobuf-java:${protobufVersion}"
     implementation "io.grpc:grpc-all:${grpcVersion}"
-    implementation "com.google.protobuf:protoc:${protobufVersion}"
-    implementation "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
     implementation 'net.devh:grpc-client-spring-boot-starter:2.14.0.RELEASE'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework:spring-test:5.3.24'

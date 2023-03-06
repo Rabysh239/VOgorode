@@ -1,48 +1,57 @@
 package ru.tinkoff.academy.landscape.controller;
 
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.info.BuildProperties;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import ru.tinkoff.academy.landscape.ReadinessStatus;
-import ru.tinkoff.academy.landscape.service.SystemService;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Map;
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
-import static org.springframework.http.ResponseEntity.status;
-import static ru.tinkoff.academy.landscape.ReadinessStatus.NOK;
-import static ru.tinkoff.academy.landscape.ReadinessStatus.OK;
-
+@SpringBootTest(webEnvironment = RANDOM_PORT)
+@RunWith(SpringRunner.class)
+@AutoConfigureMockMvc
 class SystemControllerTest {
-    private final BuildProperties buildProperties = mock(BuildProperties.class);
-    private final SystemService service = mock(SystemService.class);
-    private final SystemController controller = new SystemController(service, buildProperties);
+    @Autowired
+    private MockMvc mockMvc;
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
-    @Test
-    void getLiveness() {
-        assertEquals(HttpStatus.OK, controller.getLiveness().getStatusCode());
+    @BeforeEach
+    public void initialiseRestAssuredMockMvcWebApplicationContext() {
+        RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
+        RestAssuredMockMvc.mockMvc(mockMvc);
     }
 
     @Test
-    void getReadinessWhenReady() {
-        when(buildProperties.getName()).thenReturn("name");
-        when(service.getStatus()).thenReturn(OK);
+    void liveness() {
+        var path = "/system/liveness";
 
-        assertEquals(ResponseEntity.ok(Map.of("name", "OK")), controller.getReadiness());
-
-        verify(buildProperties).getName();
-        verify(service).getStatus();
+        given()
+                .when()
+                .get(path)
+                .then()
+                .statusCode(OK.value());
     }
 
     @Test
-    void getReadinessWhenNotReady() {
-        when(service.getStatus()).thenReturn(NOK);
+    void readiness() {
+        var path = "/system/readiness";
 
-        assertEquals(status(SERVICE_UNAVAILABLE).build(), controller.getReadiness());
-
-        verify(service).getStatus();
+        given()
+                .when()
+                .get(path)
+                .then()
+                .statusCode(OK.value())
+                .expect(jsonPath("$.LandscapeService").value("OK"));
     }
 }

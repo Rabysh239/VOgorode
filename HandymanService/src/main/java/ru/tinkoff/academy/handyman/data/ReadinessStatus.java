@@ -1,4 +1,4 @@
-package ru.tinkoff.academy.handyman;
+package ru.tinkoff.academy.handyman.data;
 
 public enum ReadinessStatus {
     OK,

@@ -15,6 +15,6 @@ public class ApplicationReadyEventListener {
      */
     @EventListener(ApplicationReadyEvent.class)
     public void changeReadinessStatus() {
-        SystemService.doReady();
+        SystemService.setIsReady(true);
     }
 }

@@ -1,28 +1,43 @@
 package ru.tinkoff.academy.landscape.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.academy.landscape.ReadinessStatus;
+import ru.tinkoff.academy.landscape.data.ReadinessStatus;
 
-import static ru.tinkoff.academy.landscape.ReadinessStatus.NOK;
-import static ru.tinkoff.academy.landscape.ReadinessStatus.OK;
+import java.util.Map.Entry;
+
+import static java.util.Map.entry;
+import static ru.tinkoff.academy.landscape.data.ReadinessStatus.NOK;
+import static ru.tinkoff.academy.landscape.data.ReadinessStatus.OK;
 
 @Service
 @RequiredArgsConstructor
 public class SystemService {
+    private final BuildProperties buildProperties;
     private static volatile boolean isReady = false;
 
     /**
-     * @return "OK"
+     * @return if {@link SystemService#isReady} == true return OK else NOK
      */
-    public ReadinessStatus getStatus() {
+    public ReadinessStatus getReadinessStatus() {
         return isReady ? OK : NOK;
     }
 
     /**
-     * Changes {@link SystemService#isReady} to true.
+     * @return entry of serviceName : readiness status
+     * @see SystemService#getReadinessStatus()
      */
-    public static void doReady() {
-        isReady = true;
+    public Entry<String, String> getReadiness() {
+        return entry(buildProperties.getName(), getReadinessStatus().toString());
+    }
+
+    /**
+     * Sets {@link SystemService#isReady} to given <em>value</em>.
+     *
+     * @param isReady is <em>value</em> for setting
+     */
+    public static void setIsReady(boolean isReady) {
+        SystemService.isReady = isReady;
     }
 }

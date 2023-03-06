@@ -1,4 +1,4 @@
-package ru.tinkoff.academy.rancher;
+package ru.tinkoff.academy.rancher.data;
 
 public enum ReadinessStatus {
     OK,

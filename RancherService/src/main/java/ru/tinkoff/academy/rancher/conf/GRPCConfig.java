@@ -1,18 +1,15 @@
-package ru.tinkoff.academy.handyman;
+package ru.tinkoff.academy.rancher.conf;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-
-import java.util.Objects;
 
 @Configuration
 @RequiredArgsConstructor
-public class Config {
-    private final Environment env;
+public class GRPCConfig {
+    private final GRPCProperties gRPCProperties;
 
     /**
      * Creates <b>managedChannel</b> bean with grpc properties and plaintext.
@@ -22,10 +19,7 @@ public class Config {
     @Bean
     public ManagedChannel managedChannel() {
         return ManagedChannelBuilder
-                .forAddress(
-                        env.getProperty("grpc.server.address"),
-                        Integer.parseInt(Objects.requireNonNull(env.getProperty("grpc.server.port")))
-                )
+                .forAddress(gRPCProperties.getAddress(), gRPCProperties.getPort())
                 .usePlaintext()
                 .build();
     }
