@@ -4,7 +4,7 @@ import com.google.protobuf.Empty;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
-import org.springframework.boot.info.BuildProperties;
+import ru.tinkoff.academy.rancher.data.BuildInfo;
 import ru.tinkoff.proto.ReadinessResponse;
 import ru.tinkoff.proto.StatusServiceGrpc;
 import ru.tinkoff.proto.VersionResponse;
@@ -13,8 +13,6 @@ import ru.tinkoff.proto.VersionResponse;
 @RequiredArgsConstructor
 public class StatusServiceImpl extends StatusServiceGrpc.StatusServiceImplBase {
     private final SystemService systemService;
-    private final PropertyService propertyService;
-    private final BuildProperties buildProperties;
 
     /**
      * Fills ReadinessResponse.
@@ -23,7 +21,7 @@ public class StatusServiceImpl extends StatusServiceGrpc.StatusServiceImplBase {
      */
     @Override
     public void getReadiness(Empty request, StreamObserver<ReadinessResponse> responseObserver) {
-        String status = propertyService.getIsGrpcStatus() ? systemService.getGrpcStatus().name() : systemService.getStatus().toString();
+        String status = systemService.getReadinessStatus();
         ReadinessResponse readinessResponse = ReadinessResponse.newBuilder()
                 .setStatus(status)
                 .build();
@@ -38,11 +36,12 @@ public class StatusServiceImpl extends StatusServiceGrpc.StatusServiceImplBase {
      */
     @Override
     public void getVersion(Empty request, StreamObserver<VersionResponse> responseObserver) {
+        BuildInfo buildInfo = systemService.getBuildInfo();
         VersionResponse versionResponse = VersionResponse.newBuilder()
-                .setArtifact(buildProperties.getArtifact())
-                .setName(buildProperties.getName())
-                .setGroup(buildProperties.getGroup())
-                .setVersion(buildProperties.getVersion())
+                .setArtifact(buildInfo.getArtifact())
+                .setName(buildInfo.getName())
+                .setGroup(buildInfo.getGroup())
+                .setVersion(buildInfo.getVersion())
                 .build();
         responseObserver.onNext(versionResponse);
         responseObserver.onCompleted();

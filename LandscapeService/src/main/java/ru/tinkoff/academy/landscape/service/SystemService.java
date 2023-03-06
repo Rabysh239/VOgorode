@@ -1,24 +1,36 @@
 package ru.tinkoff.academy.landscape.service;
 
-import io.grpc.ConnectivityState;
-import io.grpc.ManagedChannel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.academy.landscape.ReadinessStatus;
+import ru.tinkoff.academy.landscape.data.ReadinessStatus;
 
-import static ru.tinkoff.academy.landscape.ReadinessStatus.*;
+import java.util.Map.Entry;
+
+import static java.util.Map.entry;
+import static ru.tinkoff.academy.landscape.data.ReadinessStatus.NOK;
+import static ru.tinkoff.academy.landscape.data.ReadinessStatus.OK;
 
 @Service
 @RequiredArgsConstructor
 public class SystemService {
+    private final BuildProperties buildProperties;
     private static volatile boolean isReady = false;
     private static volatile boolean isMalfunction = false;
 
     /**
-     * @return if {@link SystemService#isReady} == false {@link ReadinessStatus#NOK} else if {@link SystemService#isMalfunction} == true {@link ReadinessStatus#MALFUNCTION} else {@link ReadinessStatus#OK}.
+     * @return if {@link SystemService#isReady} == true return OK else NOK
      */
-    public ReadinessStatus getStatus() {
-        return isReady ? (isMalfunction ? MALFUNCTION : OK) : NOK;
+    public ReadinessStatus getReadinessStatus() {
+        return isReady ? OK : NOK;
+    }
+
+    /**
+     * @return entry of serviceName : readiness status
+     * @see SystemService#getReadinessStatus()
+     */
+    public Entry<String, String> getReadiness() {
+        return entry(buildProperties.getName(), getReadinessStatus().toString());
     }
 
     /**
