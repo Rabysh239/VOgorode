@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: landscape
+spec:
+  selector:
+    matchLabels:
+      app: landscape
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: landscape
+    spec:
+      containers:
+        - name: landscape
+          image: landscape:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8082
+          env:
+            - name: grpc.client.HandymanService.address
+              value: static://handyman:8090
+            - name: grpc.client.RancherService.address
+              value: static://rancher:8091
+            - name: spring.datasource.url
+              value: jdbc:postgresql://postgres:5432/vogorode
+            - name: spring.datasource.username
+              value: username
+            - name: spring.datasource.password
+              value: 123
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: landscape
+spec:
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082
+  type: LoadBalancer
+  selector:
+    app: landscape
