@@ -34,7 +34,7 @@ spec:
             - name: POSTGRES_USER
               value: username
             - name: POSTGRES_PASSWORD
-              value: 123
+              value: password
           volumeMounts:
             - mountPath: /data/db
               name: storage

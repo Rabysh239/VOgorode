@@ -27,7 +27,7 @@ spec:
             - name: spring.datasource.username
               value: username
             - name: spring.datasource.password
-              value: 123
+              value: password
 ---
 apiVersion: v1
 kind: Service
