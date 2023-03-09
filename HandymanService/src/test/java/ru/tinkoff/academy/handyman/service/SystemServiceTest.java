@@ -10,7 +10,6 @@ import static io.grpc.ConnectivityState.READY;
 import static java.util.Map.entry;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import static ru.tinkoff.academy.handyman.data.ReadinessStatus.MALFUNCTION;
 import static ru.tinkoff.academy.handyman.service.SystemService.setIsMalfunction;
 import static ru.tinkoff.academy.handyman.service.SystemService.setIsReady;
 
@@ -23,8 +22,8 @@ class SystemServiceTest {
     @Test
     void getReadinessStatusWhenReady() {
         when(gRPCProperties.getStatusEnabled()).thenReturn(false);
-        setIsMalfunction(false);
         setIsReady(true);
+        setIsMalfunction(false);
 
         assertEquals("OK", service.getReadinessStatus());
 
@@ -34,7 +33,6 @@ class SystemServiceTest {
     @Test
     void getReadinessStatusWhenNotReady() {
         when(gRPCProperties.getStatusEnabled()).thenReturn(false);
-        setIsMalfunction(false);
         setIsReady(false);
 
         assertEquals("NOK", service.getReadinessStatus());
@@ -58,6 +56,7 @@ class SystemServiceTest {
         when(buildProperties.getName()).thenReturn("name");
         when(gRPCProperties.getStatusEnabled()).thenReturn(false);
         setIsReady(true);
+        setIsMalfunction(false);
 
         assertEquals(entry("name", "OK"), service.getReadiness());
 

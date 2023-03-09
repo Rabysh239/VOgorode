@@ -18,6 +18,7 @@ class SystemServiceTest {
     @Test
     void getReadinessStatusWhenReady() {
         setIsReady(true);
+        setIsMalfunction(false);
 
         assertEquals(ReadinessStatus.OK, service.getReadinessStatus());
     }
@@ -33,6 +34,7 @@ class SystemServiceTest {
     void getReadiness() {
         when(buildProperties.getName()).thenReturn("name");
         setIsReady(true);
+        setIsMalfunction(false);
 
         assertEquals(entry("name", "OK"), service.getReadiness());
 
