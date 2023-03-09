@@ -7,6 +7,9 @@ import ru.tinkoff.academy.landscape.data.ReadinessStatus;
 import static java.util.Map.entry;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+import static ru.tinkoff.academy.landscape.data.ReadinessStatus.MALFUNCTION;
+import static ru.tinkoff.academy.landscape.service.SystemService.setIsMalfunction;
+import static ru.tinkoff.academy.landscape.service.SystemService.setIsReady;
 
 class SystemServiceTest {
     private final BuildProperties buildProperties = mock(BuildProperties.class);
@@ -14,14 +17,15 @@ class SystemServiceTest {
 
     @Test
     void getReadinessStatusWhenReady() {
-        SystemService.setIsReady(true);
+        setIsReady(true);
+        setIsMalfunction(false);
 
         assertEquals(ReadinessStatus.OK, service.getReadinessStatus());
     }
 
     @Test
     void getReadinessStatusWhenNotReady() {
-        SystemService.setIsReady(false);
+        setIsReady(false);
 
         assertEquals(ReadinessStatus.NOK, service.getReadinessStatus());
     }
@@ -29,10 +33,19 @@ class SystemServiceTest {
     @Test
     void getReadiness() {
         when(buildProperties.getName()).thenReturn("name");
-        SystemService.setIsReady(true);
+        setIsReady(true);
+        setIsMalfunction(false);
 
         assertEquals(entry("name", "OK"), service.getReadiness());
 
         verify(buildProperties).getName();
+    }
+
+    @Test
+    void getStatusWhenReadyMalfunction() {
+        setIsReady(true);
+        setIsMalfunction(true);
+
+        assertEquals(MALFUNCTION, service.getReadinessStatus());
     }
 }

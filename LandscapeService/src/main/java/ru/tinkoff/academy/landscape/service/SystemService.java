@@ -8,20 +8,20 @@ import ru.tinkoff.academy.landscape.data.ReadinessStatus;
 import java.util.Map.Entry;
 
 import static java.util.Map.entry;
-import static ru.tinkoff.academy.landscape.data.ReadinessStatus.NOK;
-import static ru.tinkoff.academy.landscape.data.ReadinessStatus.OK;
+import static ru.tinkoff.academy.landscape.data.ReadinessStatus.*;
 
 @Service
 @RequiredArgsConstructor
 public class SystemService {
     private final BuildProperties buildProperties;
     private static volatile boolean isReady = false;
+    private static volatile boolean isMalfunction = false;
 
     /**
      * @return if {@link SystemService#isReady} == true return OK else NOK
      */
     public ReadinessStatus getReadinessStatus() {
-        return isReady ? OK : NOK;
+        return isReady ? (isMalfunction ? MALFUNCTION : OK) : NOK;
     }
 
     /**
@@ -39,5 +39,14 @@ public class SystemService {
      */
     public static void setIsReady(boolean isReady) {
         SystemService.isReady = isReady;
+    }
+
+    /**
+     * Sets {@link SystemService#isMalfunction} to given <em>value</em>.
+     *
+     * @param isMalfunction is <em>value</em> for setting
+     */
+    public static void setIsMalfunction(boolean isMalfunction) {
+        SystemService.isMalfunction = isMalfunction;
     }
 }

@@ -17,5 +17,4 @@ grpc:
     RancherService:
       address: "localhost:8091"
       negotiationType: plaintext
-service:
-  listOfNames: HandymanService, RancherService
+  serviceNames: HandymanService, RancherService
