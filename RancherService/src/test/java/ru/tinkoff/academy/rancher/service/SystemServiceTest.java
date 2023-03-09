@@ -23,6 +23,7 @@ class SystemServiceTest {
     void getReadinessStatusWhenReady() {
         when(gRPCProperties.getStatusEnabled()).thenReturn(false);
         setIsReady(true);
+        setIsMalfunction(false);
 
         assertEquals("OK", service.getReadinessStatus());
 
@@ -55,6 +56,7 @@ class SystemServiceTest {
         when(buildProperties.getName()).thenReturn("name");
         when(gRPCProperties.getStatusEnabled()).thenReturn(false);
         setIsReady(true);
+        setIsMalfunction(false);
 
         assertEquals(entry("name", "OK"), service.getReadiness());
 
