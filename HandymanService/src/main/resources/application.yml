@@ -1,5 +1,5 @@
 server:
-  port: 8000
+  port: 8080
 management:
   endpoints:
     web:
@@ -9,3 +9,8 @@ management:
       path-mapping:
         prometheus: /metrics
         info: /actuator/info
+grpc:
+  server:
+    port: 8090
+    address: 127.0.0.1
+    statusEnabled: true

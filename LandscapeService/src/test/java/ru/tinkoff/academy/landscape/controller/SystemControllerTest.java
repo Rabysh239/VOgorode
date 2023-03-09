@@ -1,4 +1,4 @@
-package ru.tinkoff.academy.rancher.controller;
+package ru.tinkoff.academy.landscape.controller;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
@@ -19,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
-class SystemEndpointTest {
+class SystemControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
