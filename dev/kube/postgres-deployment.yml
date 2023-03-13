@@ -28,13 +28,9 @@ spec:
           name: postgres
           ports:
             - containerPort: 5432
-          env:
-            - name: POSTGRES_DB
-              value: vogorode
-            - name: POSTGRES_USER
-              value: username
-            - name: POSTGRES_PASSWORD
-              value: password
+          envFrom:
+            - secretRef:
+                name: env
           volumeMounts:
             - mountPath: /data/db
               name: storage

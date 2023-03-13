@@ -19,15 +19,9 @@ spec:
           ports:
             - containerPort: 8081
             - containerPort: 8091
-          env:
-            - name: grpc.server.address
-              value: 0.0.0.0
-            - name: spring.datasource.url
-              value: jdbc:postgresql://postgres:5432/vogorode
-            - name: spring.datasource.username
-              value: username
-            - name: spring.datasource.password
-              value: password
+          envFrom:
+            - secretRef:
+                name: env
 ---
 apiVersion: v1
 kind: Service

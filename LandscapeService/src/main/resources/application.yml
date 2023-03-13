@@ -18,3 +18,8 @@ grpc:
       address: "localhost:8091"
       negotiationType: plaintext
   serviceNames: HandymanService, RancherService
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
