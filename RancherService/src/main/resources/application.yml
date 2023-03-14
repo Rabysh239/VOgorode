@@ -14,3 +14,8 @@ grpc:
     port: 8091
     address: 127.0.0.1
     statusEnabled: true
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: landscape
+spec:
+  selector:
+    matchLabels:
+      app: landscape
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: landscape
+    spec:
+      containers:
+        - name: landscape
+          image: landscape:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8082
+          env:
+            - name: grpc.client.HandymanService.address
+              value: static://handyman:8090
+          envFrom:
+            - secretRef:
+                name: env
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: landscape
+spec:
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082
+  type: LoadBalancer
+  selector:
+    app: landscape

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rancher
+spec:
+  selector:
+    matchLabels:
+      app: rancher
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: rancher
+    spec:
+      containers:
+        - name: rancher
+          image: rancher:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8081
+            - containerPort: 8091
+          envFrom:
+            - secretRef:
+                name: env
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rancher
+spec:
+  ports:
+    - protocol: TCP
+      name: rancher
+      port: 8081
+      targetPort: 8081
+    - protocol: TCP
+      name: rancher-grpc
+      port: 8091
+      targetPort: 8091
+  type: LoadBalancer
+  selector:
+    app: rancher

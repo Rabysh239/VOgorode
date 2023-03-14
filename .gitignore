@@ -1,1 +1,3 @@
 .idea/
+dev/.env
+dev/kube/env.yml
