@@ -9,7 +9,6 @@ services:
     build:
       context: ../HandymanService/
     container_name: handyman
-    image: handyman
     ports:
       - "8080:8080"
       - "8090:8090"
@@ -23,7 +22,6 @@ services:
     build:
       context: ../RancherService/
     container_name: rancher
-    image: rancher
     ports:
       - "8081:8081"
       - "8091:8091"
@@ -37,7 +35,6 @@ services:
     build:
       context: ../LandscapeService/
     container_name: landscape
-    image: landscape
     ports:
       - "8082:8082"
     environment:
