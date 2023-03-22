@@ -4,7 +4,7 @@
 create table if not exists user_types
 (
     id   smallserial primary key,
-    name user_type
+    name varchar(255)
 );
 
 INSERT INTO user_types
