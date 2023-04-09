@@ -12,10 +12,10 @@ VALUES (1, 'handyman'),
        (2, 'rancher');
 
 alter table users
-    add column user_type_id smallserial not null references user_types (id);
+    add column type_id smallserial not null references user_types (id);
 
 update users
-set user_type_id = (select id from user_types where user_types.name = users.user_type);
+set type_id = (select id from user_types where user_types.name = users.type);
 
 alter table users
-    drop column user_type;
+    drop column type;
