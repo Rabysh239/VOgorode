@@ -30,7 +30,7 @@ spec:
             - containerPort: 5432
           envFrom:
             - secretRef:
-                name: env
+                name: postgres-env
           volumeMounts:
             - mountPath: /data/db
               name: storage

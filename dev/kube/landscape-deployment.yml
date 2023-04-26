@@ -18,12 +18,9 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 8082
-          env:
-            - name: grpc.client.HandymanService.address
-              value: static://handyman:8090
           envFrom:
             - secretRef:
-                name: env
+                name: landscape-env
 ---
 apiVersion: v1
 kind: Service

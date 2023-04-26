@@ -12,10 +12,10 @@ management:
 grpc:
   client:
     HandymanService:
-      address: "localhost:8090"
+      address: ${GRPC_HANDYMAN_SERVICE_URL}
       negotiationType: plaintext
     RancherService:
-      address: "localhost:8091"
+      address: ${GRPC_RANCHER_SERVICE_URL}
       negotiationType: plaintext
   serviceNames: HandymanService, RancherService
 spring:

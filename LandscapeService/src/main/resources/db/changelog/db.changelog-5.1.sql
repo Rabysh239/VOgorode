@@ -7,8 +7,8 @@ create table if not exists user_types
     name varchar(255)
 );
 
-INSERT INTO user_types
-VALUES (1, 'handyman'),
+insert into user_types
+values (1, 'handyman'),
        (2, 'rancher');
 
 alter table users
