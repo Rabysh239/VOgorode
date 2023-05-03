@@ -1,1 +1,7 @@
 databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Rabysh239
+      changes:
+        - createCollection:
+            collectionName: ranchers

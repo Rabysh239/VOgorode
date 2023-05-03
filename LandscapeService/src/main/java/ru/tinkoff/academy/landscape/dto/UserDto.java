@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class UserDto extends UserBodyDto {
+public class UserDto {
     private UUID id;
     private String type;
     private String login;
