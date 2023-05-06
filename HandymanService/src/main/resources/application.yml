@@ -12,10 +12,12 @@ management:
 grpc:
   server:
     port: 8090
-    address: 127.0.0.1
+    address: ${GRPC_SERVER_ADDRESS}
     statusEnabled: true
 spring:
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+  data:
+    mongodb:
+      uri: ${MONGO_DB_URI}
+
+landscape:
+  url: ${LANDSCAPE_SERVICE_URL}

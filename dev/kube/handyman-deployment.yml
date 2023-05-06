@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: handyman
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -19,12 +19,9 @@ spec:
           ports:
             - containerPort: 8080
             - containerPort: 8090
-          env:
-            - name: grpc.server.address
-              value: 0.0.0.0
           envFrom:
             - secretRef:
-                name: env
+                name: handyman-env
 ---
 apiVersion: v1
 kind: Service

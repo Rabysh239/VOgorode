@@ -1,7 +1,7 @@
 --liquibase formatted sql
 
 --changeset Rabysh239:3 splitStatements:false
-create or replace procedure update_user_type(p_user_type_id smallint, p_batch_size integer, p_pause_time integer)
+create or replace procedure update_user_type(p_type_id smallint, p_batch_size integer, p_pause_time integer)
     language plpgsql
 as
 $$
@@ -14,7 +14,7 @@ begin
         loop
             raise notice '% - Start processing next % rows.', now(), p_batch_size;
             update users
-            set user_type_id = p_user_type_id
+            set type_id = p_type_id
             where id in (
                 select id
                 from users
