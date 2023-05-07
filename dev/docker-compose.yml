@@ -50,6 +50,7 @@ services:
     container_name: prometheus
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
     ports:
       - "9090:9090"
     networks:
@@ -57,11 +58,12 @@ services:
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
     ports:
-      - "9095:3000"
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - "3000:3000"
+    env_file:
+      - environment/grafana/.env
     depends_on:
       - prometheus
     networks:
@@ -75,11 +77,17 @@ services:
       - postgres-data:/var/lib/postgresql/data
     env_file:
       - environment/postgres/.env
+    networks:
+      - internal
   mongo:
     image: mongo
     container_name: mongo
     ports:
       - "27017:27017"
+    networks:
+      - internal
 
 volumes:
   postgres-data:
+  prometheus_data:
+  grafana_data:
