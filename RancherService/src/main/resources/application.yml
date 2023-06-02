@@ -18,6 +18,14 @@ spring:
   data:
     mongodb:
       uri: ${MONGO_DB_URI}
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
 
 landscape:
   url: ${LANDSCAPE_SERVICE_URL}

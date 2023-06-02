@@ -1,7 +1,7 @@
 databaseChangeLog:
-  - changeSet:
-      id: 1
-      author: Rabysh239
-      changes:
-        - createCollection:
-            collectionName: handymans
+  - include:
+      file: db/changelog/db.changelog-8-handymans.sql
+  - include:
+      file: db/changelog/db.changelog-8-accounts.sql
+  - include:
+      file: db/changelog/db.changelog-8-skills.sql

@@ -1,9 +1,9 @@
 package ru.tinkoff.academy.handyman.repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import ru.tinkoff.academy.handyman.model.Handyman;
 
-import java.util.UUID;
-
-public interface HandymanRepository extends MongoRepository<Handyman, String> {
+@Repository
+public interface HandymanRepository extends JpaRepository<Handyman, Long> {
 }

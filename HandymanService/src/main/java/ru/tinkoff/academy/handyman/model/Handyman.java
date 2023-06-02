@@ -1,17 +1,27 @@
 package ru.tinkoff.academy.handyman.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
+import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
 @Data
+@Entity
+@Table(name = "handymans")
 public class Handyman {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "user_id", nullable = false)
     private UUID userId;
-    private Double latitude;
-    private Double longitude;
-    private List<String> skills;
+    @JsonIgnoreProperties(value = "handyman")
+    @OneToMany(mappedBy = "handyman", cascade = CascadeType.REMOVE)
+    private List<Skill> skills;
+    @JsonIgnoreProperties(value = "handyman")
+    @OneToMany(mappedBy = "handyman", cascade = CascadeType.REMOVE)
+    private List<Account> accounts;
+    @Column(nullable = false)
+    private byte[] photo;
 }

@@ -3,8 +3,9 @@ package ru.tinkoff.academy.rancher.controller;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.tinkoff.academy.rancher.dto.RancherBodyDto;
+import ru.tinkoff.academy.rancher.dto.CreatingRancherDto;
 import ru.tinkoff.academy.rancher.dto.RancherDto;
+import ru.tinkoff.academy.rancher.dto.UpdatingRancherDto;
 import ru.tinkoff.academy.rancher.service.RancherService;
 
 @RestController
@@ -15,25 +16,25 @@ public class RancherController {
 
     @Timed
     @PostMapping
-    public RancherDto create(@RequestBody RancherBodyDto rancherBodyDto) {
-        return service.create(rancherBodyDto);
+    public RancherDto create(@RequestBody CreatingRancherDto creatingRancherDto) {
+        return service.create(creatingRancherDto);
     }
 
     @Timed
     @GetMapping("/{id}")
-    public RancherDto get(@PathVariable String id) {
+    public RancherDto get(@PathVariable Long id) {
         return service.get(id);
     }
 
     @Timed
     @PutMapping("/{id}")
-    public RancherDto update(@PathVariable String id, @RequestBody RancherBodyDto rancherBodyDto) {
-        return service.update(id, rancherBodyDto);
+    public RancherDto update(@PathVariable Long id, @RequestBody UpdatingRancherDto updatingRancherDto) {
+        return service.update(id, updatingRancherDto);
     }
 
     @Timed
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable String id) {
+    public void delete(@PathVariable Long id) {
         service.delete(id);
     }
 }

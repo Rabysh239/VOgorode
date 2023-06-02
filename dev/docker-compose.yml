@@ -69,7 +69,7 @@ services:
     networks:
       - internal
   postgres:
-    image: postgres:latest
+    image: postgis/postgis:15-3.3
     container_name: postgres
     ports:
       - "5432:5432"

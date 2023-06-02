@@ -2,14 +2,12 @@ package ru.tinkoff.academy.landscape.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.academy.landscape.dto.UserBodyDto;
-import ru.tinkoff.academy.landscape.dto.UserDto;
-import ru.tinkoff.academy.landscape.exception.UserNotFoundException;
+import ru.tinkoff.academy.landscape.dto.CreateUserDto;
+import ru.tinkoff.academy.landscape.exception.EntityNotFoundException;
 import ru.tinkoff.academy.landscape.mapper.UserMapper;
 import ru.tinkoff.academy.landscape.model.User;
 import ru.tinkoff.academy.landscape.repository.UserRepository;
 
-import javax.transaction.Transactional;
 import java.util.UUID;
 
 @Service
@@ -18,25 +16,21 @@ public class UserService {
     private final UserRepository repository;
     private final UserMapper mapper;
 
-    public UserDto create(UserBodyDto userBodyDto) {
-        User user = mapper.mapToEntity(userBodyDto);
-        User savedUser = repository.save(user);
-        return mapper.mapToDto(savedUser);
+    public User create(CreateUserDto createUserDto) {
+        User user = mapper.mapToEntity(createUserDto);
+        return repository.save(user);
     }
 
-    public UserDto get(UUID id) {
-        User user = getUser(id);
-        return mapper.mapToDto(user);
+    public User get(UUID id) {
+        return getUser(id);
     }
 
-    @Transactional
-    public UserDto update(UUID id, UserBodyDto userBodyDto) {
-        User updatedUser = mapper.mapToEntity(userBodyDto);
+    public User update(UUID id, CreateUserDto createUserDto) {
+        User updatedUser = mapper.mapToEntity(createUserDto);
         User user = getUser(id);
         updatedUser.setId(user.getId());
         updatedUser.setCreated(user.getCreated());
-        User savedUser = repository.save(user);
-        return mapper.mapToDto(savedUser);
+        return repository.save(user);
     }
 
     public void delete(UUID id) {
@@ -44,6 +38,6 @@ public class UserService {
     }
 
     private User getUser(UUID id) {
-        return repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("user", String.valueOf(id)));
     }
 }
