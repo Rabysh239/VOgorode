@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.academy.landscape.data.Direction;
+import ru.tinkoff.academy.landscape.data.OrderStatus;
 import ru.tinkoff.academy.landscape.dto.OrderDto;
 import ru.tinkoff.academy.landscape.exception.EntityNotFoundException;
 import ru.tinkoff.academy.landscape.mapper.OrderMapper;
@@ -23,6 +24,7 @@ public class OrderService {
         Order order = mapper.mapToEntity(orderDto);
         User user = userService.get(orderDto.getUserId());
         order.setUser(user);
+        order.setStatus(OrderStatus.CREATED);
         return repository.save(order);
     }
 
