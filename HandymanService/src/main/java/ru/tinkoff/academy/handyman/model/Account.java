@@ -1,6 +1,5 @@
 package ru.tinkoff.academy.handyman.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import ru.tinkoff.academy.handyman.data.PaymentSystem;
 
@@ -13,7 +12,6 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @JsonIgnoreProperties(value = "accounts")
     @ManyToOne
     @JoinColumn(nullable = false)
     private Handyman handyman;

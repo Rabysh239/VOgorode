@@ -1,6 +1,5 @@
 package ru.tinkoff.academy.handyman.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -14,7 +13,6 @@ public class Skill {
     private Long id;
     @Column(nullable = false)
     private String name;
-    @JsonIgnoreProperties("skills")
     @ManyToOne
     @JoinColumn(nullable = false)
     private Handyman handyman;
