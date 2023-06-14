@@ -9,18 +9,14 @@ import ru.tinkoff.academy.rancher.dto.UserDto;
 import ru.tinkoff.academy.rancher.model.Rancher;
 import ru.tinkoff.academy.rancher.model.User;
 
-import java.util.UUID;
-
 @Component
 @RequiredArgsConstructor
 public class RancherMapper {
     private final ModelMapper modelMapper;
     private static final String USER_TYPE = "rancher";
 
-    public Rancher mapToEntity(UpdatingRancherDto updatingRancherDto, UUID userId) {
-        Rancher rancher = modelMapper.map(updatingRancherDto, Rancher.class);
-        rancher.setUserId(userId);
-        return rancher;
+    public Rancher mapToEntity(UpdatingRancherDto updatingRancherDto) {
+        return modelMapper.map(updatingRancherDto, Rancher.class);
     }
 
     public RancherDto mapToDto(Rancher rancher, User user) {

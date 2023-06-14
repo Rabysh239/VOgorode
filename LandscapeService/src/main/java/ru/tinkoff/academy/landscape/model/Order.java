@@ -15,16 +15,16 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "field_id", nullable = false)
+    @Column(nullable = false)
     private Long fieldId;
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(nullable = false)
     private User user;
     @Enumerated(EnumType.STRING)
-    @Column(name = "work_type", nullable = false)
+    @Column(nullable = false)
     private WorkType workType;
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(nullable = false)
     private OrderStatus status;
     @CreationTimestamp
     private Timestamp created;

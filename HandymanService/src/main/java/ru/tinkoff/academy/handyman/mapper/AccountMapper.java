@@ -18,9 +18,7 @@ public class AccountMapper {
         return accountDto;
     }
 
-    public Account mapToEntity(Long id, AccountDto accountDto) {
-        Account account = modelMapper.map(accountDto, Account.class);
-        account.setId(id);
-        return account;
+    public Account mapToEntity(AccountDto accountDto) {
+        return modelMapper.map(accountDto, Account.class);
     }
 }

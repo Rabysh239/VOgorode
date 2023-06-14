@@ -1,13 +1,10 @@
 package ru.tinkoff.academy.rancher.dto;
 
 import lombok.Data;
-import org.locationtech.jts.geom.Geometry;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class FieldDto {
+public class FieldDto extends InnerFieldDto {
     private Long rancherId;
-    private String address;
-    private Double latitude;
-    private Double longitude;
-    private Geometry area;
 }

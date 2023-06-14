@@ -3,7 +3,7 @@ package ru.tinkoff.academy.landscape.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-import ru.tinkoff.academy.landscape.data.Direction;
+import ru.tinkoff.academy.landscape.data.SortDirection;
 import ru.tinkoff.academy.landscape.dto.OrderDto;
 import ru.tinkoff.academy.landscape.model.Order;
 import ru.tinkoff.academy.landscape.service.OrderService;
@@ -28,8 +28,8 @@ public class OrderController {
     public Page<Order> getPage(
             @RequestParam int page,
             @RequestParam(required = false, defaultValue = "10") int size,
-            @RequestParam(required = false, defaultValue = "NONE") Direction direction) {
-        return service.getPage(page, size, direction);
+            @RequestParam(required = false, defaultValue = "NONE") SortDirection sortDirection) {
+        return service.getPage(page, size, sortDirection);
     }
 
     @PutMapping("/{id}")

@@ -16,6 +16,6 @@ public class Skill {
     private String name;
     @JsonIgnoreProperties("skills")
     @ManyToOne
-    @JoinColumn(name = "handyman_id", nullable = false)
+    @JoinColumn(nullable = false)
     private Handyman handyman;
 }

@@ -2,7 +2,10 @@ package ru.tinkoff.academy.handyman.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.academy.handyman.dto.*;
+import ru.tinkoff.academy.handyman.dto.CreatingHandymanDto;
+import ru.tinkoff.academy.handyman.dto.HandymanDto;
+import ru.tinkoff.academy.handyman.dto.UpdatingHandymanDto;
+import ru.tinkoff.academy.handyman.dto.UserDto;
 import ru.tinkoff.academy.handyman.exception.EntityNotFoundException;
 import ru.tinkoff.academy.handyman.mapper.HandymanMapper;
 import ru.tinkoff.academy.handyman.model.Account;
@@ -10,7 +13,6 @@ import ru.tinkoff.academy.handyman.model.Handyman;
 import ru.tinkoff.academy.handyman.model.Skill;
 import ru.tinkoff.academy.handyman.model.User;
 import ru.tinkoff.academy.handyman.repository.HandymanRepository;
-import ru.tinkoff.academy.handyman.repository.SkillRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -21,19 +23,18 @@ public class HandymanService {
     private final HandymanRepository repository;
     private final HandymanMapper mapper;
     private final UserService userService;
-    private final AccountService accountService;
-    private final SkillRepository skillRepository;
 
     @Transactional
     public HandymanDto create(CreatingHandymanDto creatingHandymanDto) {
         UserDto userDto = mapper.mapToUserDto(creatingHandymanDto);
         User user = userService.create(userDto);
-        Handyman handyman = mapper.mapToEntity(creatingHandymanDto, user.getId());
+        Handyman handyman = mapper.mapToEntity(creatingHandymanDto);
+        handyman.setUserId(user.getId());
+        List<Account> accounts = creatingHandymanDto.getAccounts().stream().map(mapper::mapToEntity).toList();
+        List<Skill> skills = creatingHandymanDto.getSkills().stream().map(mapper::mapToEntity).toList();
+        handyman.setAccounts(accounts);
+        handyman.setSkills(skills);
         Handyman savedHandyman = repository.save(handyman);
-        List<Account> accounts = creatingHandymanDto.getAccounts().stream().map(f -> accountService.create(f, savedHandyman.getId())).toList();
-        List<Skill> skills = creatingHandymanDto.getSkills().stream().map(s -> create(s, savedHandyman)).toList();
-        savedHandyman.setAccounts(accounts);
-        savedHandyman.setSkills(skills);
         return mapper.mapToDto(savedHandyman, user);
     }
 
@@ -45,24 +46,18 @@ public class HandymanService {
 
     public HandymanDto update(Long id, UpdatingHandymanDto updatingHandymanDto) {
         Handyman handyman = getHandyman(id);
+        Handyman updatedHandyman = mapper.mapToEntity(updatingHandymanDto);
+        handyman.setPhoto(updatedHandyman.getPhoto());
+        repository.save(handyman);
         UserDto userDto = mapper.mapToUserDto(updatingHandymanDto);
         User user = userService.update(handyman.getUserId(), userDto);
-        Handyman updatedHandyman = mapper.mapToEntity(updatingHandymanDto, user.getId());
-        repository.save(updatedHandyman);
-        return mapper.mapToDto(updatedHandyman, user);
+        return mapper.mapToDto(handyman, user);
     }
 
     public void delete(Long id) {
         Handyman handyman = getHandyman(id);
         userService.delete(handyman.getUserId());
         repository.deleteById(id);
-    }
-
-    private Skill create(InnerSkillDto innerSkillDto, Handyman handyman) {
-        var skill = new Skill();
-        skill.setHandyman(handyman);
-        skill.setName(innerSkillDto.getName());
-        return skillRepository.save(skill);
     }
 
     private Handyman getHandyman(Long id) {

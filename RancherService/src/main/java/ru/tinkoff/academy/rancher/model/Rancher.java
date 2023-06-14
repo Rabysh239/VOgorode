@@ -14,9 +14,9 @@ public class Rancher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "user_id", nullable = false)
+    @Column(nullable = false)
     private UUID userId;
     @JsonIgnoreProperties(value = "rancher")
-    @OneToMany(mappedBy = "rancher", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "rancher")
     private List<Field> fields;
 }

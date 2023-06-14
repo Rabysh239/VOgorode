@@ -7,6 +7,7 @@ import ru.tinkoff.academy.rancher.dto.RancherDto;
 import ru.tinkoff.academy.rancher.dto.UpdatingRancherDto;
 import ru.tinkoff.academy.rancher.dto.UserDto;
 import ru.tinkoff.academy.rancher.exception.EntityNotFoundException;
+import ru.tinkoff.academy.rancher.mapper.FieldMapper;
 import ru.tinkoff.academy.rancher.mapper.RancherMapper;
 import ru.tinkoff.academy.rancher.model.Field;
 import ru.tinkoff.academy.rancher.model.Rancher;
@@ -21,17 +22,18 @@ import java.util.List;
 public class RancherService {
     private final RancherRepository repository;
     private final RancherMapper mapper;
+    private final FieldMapper fieldMapper;
     private final UserService userService;
-    private final FieldService fieldService;
 
     @Transactional
     public RancherDto create(CreatingRancherDto creatingRancherDto) {
         UserDto userDto = mapper.mapToUserDto(creatingRancherDto);
         User user = userService.create(userDto);
-        Rancher rancher = mapper.mapToEntity(creatingRancherDto, user.getId());
+        Rancher rancher = mapper.mapToEntity(creatingRancherDto);
+        rancher.setUserId(user.getId());
+        List<Field> fields = creatingRancherDto.getFields().stream().map(fieldMapper::mapToEntity).toList();
+        rancher.setFields(fields);
         Rancher savedRancher = repository.save(rancher);
-        List<Field> fields = creatingRancherDto.getFields().stream().map(f -> fieldService.create(f, savedRancher.getId())).toList();
-        savedRancher.setFields(fields);
         return mapper.mapToDto(savedRancher, user);
     }
 
@@ -45,9 +47,7 @@ public class RancherService {
         Rancher rancher = getRancher(id);
         UserDto userDto = mapper.mapToUserDto(updatingRancherDto);
         User user = userService.update(rancher.getUserId(), userDto);
-        Rancher updatedRancher = mapper.mapToEntity(updatingRancherDto, user.getId());
-        repository.save(updatedRancher);
-        return mapper.mapToDto(updatedRancher, user);
+        return mapper.mapToDto(rancher, user);
     }
 
     public void delete(Long id) {

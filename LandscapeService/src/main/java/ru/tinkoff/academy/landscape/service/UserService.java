@@ -22,22 +22,24 @@ public class UserService {
     }
 
     public User get(UUID id) {
-        return getUser(id);
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("user", String.valueOf(id)));
     }
 
     public User update(UUID id, CreateUserDto createUserDto) {
+        User user = get(id);
         User updatedUser = mapper.mapToEntity(createUserDto);
-        User user = getUser(id);
-        updatedUser.setId(user.getId());
-        updatedUser.setCreated(user.getCreated());
+        user.setType(updatedUser.getType());
+        user.setLogin(updatedUser.getLogin());
+        user.setFirstName(updatedUser.getFirstName());
+        user.setLastName(updatedUser.getLastName());
+        user.setEmail(updatedUser.getEmail());
+        user.setPhone(updatedUser.getPhone());
+        user.setLatitude(updatedUser.getLatitude());
+        user.setLongitude(updatedUser.getLongitude());
         return repository.save(user);
     }
 
     public void delete(UUID id) {
         repository.deleteById(id);
-    }
-
-    private User getUser(UUID id) {
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("user", String.valueOf(id)));
     }
 }

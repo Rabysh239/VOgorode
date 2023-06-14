@@ -4,13 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import ru.tinkoff.academy.handyman.dto.HandymanDto;
-import ru.tinkoff.academy.handyman.dto.UpdatingHandymanDto;
-import ru.tinkoff.academy.handyman.dto.UserDto;
+import ru.tinkoff.academy.handyman.dto.*;
+import ru.tinkoff.academy.handyman.model.Account;
 import ru.tinkoff.academy.handyman.model.Handyman;
+import ru.tinkoff.academy.handyman.model.Skill;
 import ru.tinkoff.academy.handyman.model.User;
-
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -18,10 +16,9 @@ public class HandymanMapper {
     private final ModelMapper modelMapper;
     private static final String USER_TYPE = "handyman";
 
-    public Handyman mapToEntity(UpdatingHandymanDto updatingHandymanDto, UUID userId) {
+    public Handyman mapToEntity(UpdatingHandymanDto updatingHandymanDto) {
         Handyman handyman = modelMapper.map(updatingHandymanDto, Handyman.class);
         handyman.setPhoto(Base64.decodeBase64(updatingHandymanDto.getPhoto()));
-        handyman.setUserId(userId);
         return handyman;
     }
 
@@ -42,5 +39,13 @@ public class HandymanMapper {
         UserDto userDto = modelMapper.map(updatingHandymanDto, UserDto.class);
         userDto.setType(USER_TYPE);
         return userDto;
+    }
+
+    public Account mapToEntity(InnerAccountDto innerAccountDto) {
+        return modelMapper.map(innerAccountDto, Account.class);
+    }
+
+    public Skill mapToEntity(InnerSkillDto innerSkillDto) {
+        return modelMapper.map(innerSkillDto, Skill.class);
     }
 }

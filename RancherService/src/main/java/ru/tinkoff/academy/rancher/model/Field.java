@@ -15,7 +15,7 @@ public class Field {
     private Long id;
     @JsonIgnoreProperties(value = "fields")
     @ManyToOne
-    @JoinColumn(name = "rancher_id", nullable = false)
+    @JoinColumn(nullable = false)
     private Rancher rancher;
     @Column(nullable = false)
     private String address;

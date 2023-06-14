@@ -15,11 +15,11 @@ public class Account {
     private Long id;
     @JsonIgnoreProperties(value = "accounts")
     @ManyToOne
-    @JoinColumn(name = "handyman_id", nullable = false)
+    @JoinColumn(nullable = false)
     private Handyman handyman;
-    @Column(name = "card_number", nullable = false)
+    @Column(nullable = false)
     private String cardNumber;
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_system", nullable = false)
+    @Column(nullable = false)
     private PaymentSystem paymentSystem;
 }
