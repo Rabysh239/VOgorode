@@ -21,13 +21,17 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    @Column(name = "type_id", nullable = false)
-    private Integer typeId;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private UserType type;
     @Column(nullable = false)
     private String login;
     @Column(nullable = false)
-    private String email;
+    private String firstName;
     @Column(nullable = false)
+    private String lastName;
+    @Column(nullable = false)
+    private String email;
     private String phone;
     @Column(nullable = false)
     private Double latitude;

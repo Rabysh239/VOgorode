@@ -24,6 +24,9 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
   jpa:
+    properties:
+      hibernate:
+        physical_naming_strategy: com.vladmihalcea.hibernate.type.util.CamelCaseToSnakeCaseNamingStrategy
     hibernate:
       ddl-auto: none
   liquibase:

@@ -4,7 +4,7 @@ import feign.RetryableException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.academy.handyman.client.LandscapeClient;
-import ru.tinkoff.academy.handyman.dto.UserBodyDto;
+import ru.tinkoff.academy.handyman.dto.UserDto;
 import ru.tinkoff.academy.handyman.exception.InnerServiceUnavailableException;
 import ru.tinkoff.academy.handyman.model.User;
 
@@ -15,9 +15,9 @@ import java.util.UUID;
 public class UserService {
     private final LandscapeClient landscapeClient;
 
-    public User create(UserBodyDto userBodyDto) {
+    public User create(UserDto userDto) {
         try {
-            return landscapeClient.create(userBodyDto);
+            return landscapeClient.create(userDto);
         } catch (RetryableException e) {
             throw new InnerServiceUnavailableException();
         }
@@ -31,9 +31,9 @@ public class UserService {
         }
     }
 
-    public User update(UUID id, UserBodyDto userBodyDto) {
+    public User update(UUID id, UserDto userDto) {
         try {
-            return landscapeClient.update(id, userBodyDto);
+            return landscapeClient.update(id, userDto);
         } catch (RetryableException e) {
             throw new InnerServiceUnavailableException();
         }

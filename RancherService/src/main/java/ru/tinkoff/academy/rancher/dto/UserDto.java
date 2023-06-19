@@ -2,15 +2,14 @@ package ru.tinkoff.academy.rancher.dto;
 
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class RancherBodyDto {
+public class UserDto {
+    private String type;
     private String login;
+    private String firstName;
+    private String lastName;
     private String email;
     private String phone;
     private Double latitude;
     private Double longitude;
-    private Double area;
-    private List<String> jobs;
 }

@@ -13,6 +13,8 @@ values (1, 'handyman'),
 
 alter table users
     add column type_id smallserial not null references user_types (id);
+alter table users
+    add constraint fk_users_types foreign key (type_id) references user_types (id);
 
 update users
 set type_id = (select id from user_types where user_types.name = users.type);

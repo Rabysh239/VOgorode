@@ -1,15 +1,15 @@
-package ru.tinkoff.academy.handyman.dto;
+package ru.tinkoff.academy.landscape.dto;
 
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class HandymanBodyDto {
+public class CreateUserDto {
+    private String type;
     private String login;
+    private String firstName;
+    private String lastName;
     private String email;
     private String phone;
     private Double latitude;
     private Double longitude;
-    private List<String> skills;
 }
