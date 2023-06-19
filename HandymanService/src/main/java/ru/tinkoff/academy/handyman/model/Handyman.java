@@ -17,10 +17,10 @@ public class Handyman {
     @Column(nullable = false)
     private UUID userId;
     @JsonIgnoreProperties(value = "handyman")
-    @OneToMany(mappedBy = "handyman")
+    @OneToMany(mappedBy = "handyman", cascade = CascadeType.ALL)
     private List<Skill> skills;
     @JsonIgnoreProperties(value = "handyman")
-    @OneToMany(mappedBy = "handyman")
+    @OneToMany(mappedBy = "handyman", cascade = CascadeType.ALL)
     private List<Account> accounts;
     @Column(nullable = false)
     private byte[] photo;

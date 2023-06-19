@@ -32,6 +32,7 @@ public class RancherService {
         Rancher rancher = mapper.mapToEntity(creatingRancherDto);
         rancher.setUserId(user.getId());
         List<Field> fields = creatingRancherDto.getFields().stream().map(fieldMapper::mapToEntity).toList();
+        fields.forEach(it -> it.setRancher(rancher));
         rancher.setFields(fields);
         Rancher savedRancher = repository.save(rancher);
         return mapper.mapToDto(savedRancher, user);

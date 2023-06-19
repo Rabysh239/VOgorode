@@ -17,6 +17,6 @@ public class Rancher {
     @Column(nullable = false)
     private UUID userId;
     @JsonIgnoreProperties(value = "rancher")
-    @OneToMany(mappedBy = "rancher")
+    @OneToMany(mappedBy = "rancher", cascade = CascadeType.ALL)
     private List<Field> fields;
 }

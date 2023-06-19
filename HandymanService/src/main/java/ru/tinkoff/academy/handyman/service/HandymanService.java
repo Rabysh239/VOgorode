@@ -31,7 +31,9 @@ public class HandymanService {
         Handyman handyman = mapper.mapToEntity(creatingHandymanDto);
         handyman.setUserId(user.getId());
         List<Account> accounts = creatingHandymanDto.getAccounts().stream().map(mapper::mapToEntity).toList();
+        accounts.forEach(it -> it.setHandyman(handyman));
         List<Skill> skills = creatingHandymanDto.getSkills().stream().map(mapper::mapToEntity).toList();
+        skills.forEach(it -> it.setHandyman(handyman));
         handyman.setAccounts(accounts);
         handyman.setSkills(skills);
         Handyman savedHandyman = repository.save(handyman);
