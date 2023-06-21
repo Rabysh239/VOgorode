@@ -1,7 +1,11 @@
 package ru.tinkoff.academy.rancher.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ru.tinkoff.academy.rancher.data.Statistic;
 import ru.tinkoff.academy.rancher.dto.CreatingRancherDto;
 import ru.tinkoff.academy.rancher.dto.RancherDto;
 import ru.tinkoff.academy.rancher.dto.UpdatingRancherDto;
@@ -42,6 +46,11 @@ public class RancherService {
         Rancher rancher = getRancher(id);
         User user = userService.get(rancher.getUserId());
         return mapper.mapToDto(rancher, user);
+    }
+
+    public Page<Statistic> getStatistics(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("id"));
+        return repository.getStatistics(pageRequest);
     }
 
     public RancherDto update(Long id, UpdatingRancherDto updatingRancherDto) {
