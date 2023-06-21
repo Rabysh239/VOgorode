@@ -1,0 +1,10 @@
+server:
+  port: 8079
+
+url:
+  handyman: ${HANDYMAN_SERVICE_URL}
+  rancher: ${RANCHER_SERVICE_URL}
+  landscape: ${LANDSCAPE_SERVICE_URL}
+
+path:
+  stabina: ${STABINA_PATH}

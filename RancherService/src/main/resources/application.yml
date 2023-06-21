@@ -25,7 +25,7 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
+        dialect: ru.tinkoff.academy.rancher.conf.PostgisDialect
         physical_naming_strategy: com.vladmihalcea.hibernate.type.util.CamelCaseToSnakeCaseNamingStrategy
 
 landscape:

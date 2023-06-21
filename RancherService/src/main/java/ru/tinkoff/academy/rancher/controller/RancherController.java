@@ -2,7 +2,9 @@ package ru.tinkoff.academy.rancher.controller;
 
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import ru.tinkoff.academy.rancher.data.Statistic;
 import ru.tinkoff.academy.rancher.dto.CreatingRancherDto;
 import ru.tinkoff.academy.rancher.dto.RancherDto;
 import ru.tinkoff.academy.rancher.dto.UpdatingRancherDto;
@@ -24,6 +26,11 @@ public class RancherController {
     @GetMapping("/{id}")
     public RancherDto get(@PathVariable Long id) {
         return service.get(id);
+    }
+
+    @GetMapping("/page/statistic")
+    public Page<Statistic> getStatistics(@RequestParam int page, @RequestParam int size) {
+        return service.getStatistics(page, size);
     }
 
     @Timed
