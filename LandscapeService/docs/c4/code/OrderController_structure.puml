@@ -1,0 +1,224 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": false, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 0,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "ru.tinkoff.academy.landscape.controller.OrderController",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+OrderController2122485325[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)OrderController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   service: OrderService [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ create(orderDto: OrderDto): Order</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delete(id: Long)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ get(id: Long): Order</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getPage(page: int, size: int, sortDirection: SortDirection): Page&lt;Order&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(id: Long, orderDto: OrderDto): Order</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+OrderMapper2129324402[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)OrderMapper</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   modelMapper: ModelMapper [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ mapToEntity(orderDto: OrderDto): Order</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+OrderRepository859109893[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)OrderRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ findAllByOrderById(pageable: Pageable): Page&lt;Order&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findAllByOrderByUser_LastNameAsc(pageable: Pageable): Page&lt;Order&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findAllByOrderByUser_LastNameDesc(pageable: Pageable): Page&lt;Order&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+OrderService1563819612[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)OrderService</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   mapper: OrderMapper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   repository: OrderRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   userService: UserService [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ create(orderDto: OrderDto): Order</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delete(id: Long)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ get(id: Long): Order</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getPage(page: int, size: int, sortDirection: SortDirection): Page&lt;Order&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(id: Long, orderDto: OrderDto): Order</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+UserMapper2129324402[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)UserMapper</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   modelMapper: ModelMapper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   userTypeRepository: UserTypeRepository [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ mapToEntity(createUserDto: CreateUserDto): User</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+UserRepository859109893[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)UserRepository</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+UserService1563819612[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)UserService</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   mapper: UserMapper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   repository: UserRepository [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ create(createUserDto: CreateUserDto): User</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delete(id: UUID)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ get(id: UUID): User</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(id: UUID, createUserDto: CreateUserDto): User</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+UserTypeRepository859109893[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)UserTypeRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getReferenceByName(type: String): UserType</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+'edges    
+OrderController2122485325 -> OrderService1563819612[label="service
+[0..1]"];
+OrderService1563819612 -> OrderMapper2129324402[label="mapper
+[0..1]"];
+OrderService1563819612 -> OrderRepository859109893[label="repository
+[0..1]"];
+OrderService1563819612 -> UserService1563819612[label="userService
+[0..1]"];
+UserMapper2129324402 -> UserTypeRepository859109893[label="userTypeRepository
+[0..1]"];
+UserService1563819612 -> UserMapper2129324402[label="mapper
+[0..1]"];
+UserService1563819612 -> UserRepository859109893[label="repository
+[0..1]"];
+    
+}
+@enduml

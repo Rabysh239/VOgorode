@@ -1,0 +1,44 @@
+@startuml Container
+!include <C4/C4_Container>
+
+!include <office/Servers/database_server>
+
+AddContainerTag("service", $legendText="service container")
+AddContainerTag("db", $sprite="database_server", $legendText="database container")
+
+Person(handyman, "Handyman", "Исполнитель, предоставляющий сервис")
+Person(rancher, "Rancher", "Владелец участков, заказывающий работу")
+Person(admin, "Admin", "Администратор приложения")
+
+System_Boundary(vogorode, "VOgorode") {
+    Container(handyman_service, "HandymanService", "Container: Java and SpringBoot", "Бэк для клиентской части, обслуживающий людей которые предоставляют сервис", $tags="service")
+    Container(landscape_service, "LandscapeService", "Container: Java and SpringBoot", "Управление пользователями, назначение на работы, управление ценой за работы, проставление рейтинга, сбор статистики", $tags="service")
+    Container(rancher_service, "RancherService", "Container: Java and SpringBoot", "Бэк обслуживающий участки, координаты, размеры поля, список требуемых работы и т.п.", $tags="service")
+    ContainerDb(postgres, "Database", "Container: Postgis:15-3.3", "Хранит handyman, skill, account, rancher, field, user, order", $tags="db")
+}
+
+Rel(handyman, handyman_service, "Управляет своей учётной записью", "http")
+Rel(rancher, rancher_service, "Управляет своей учётной записью, участками", "http")
+
+Rel(admin, handyman_service, "Получает метрики", "http")
+Rel(admin, rancher_service, "Получает метрики", "http")
+Rel(admin, landscape_service, "Смотрит состояние сервисов, получает метрики", "http")
+
+Rel(handyman, landscape_service, "Просматривает заказы", "http")
+Rel(rancher, landscape_service, "Управляет заказами", "http")
+
+Rel(handyman_service, landscape_service, "CRUD user с типом handyman", "http")
+Rel(rancher_service, landscape_service, "CRUD user с типом rancher", "http")
+
+Rel(landscape_service, handyman_service, "Запрашивает информацию о состоянии сервиса", "grpc")
+Rel(landscape_service, rancher_service, "Запрашивает информацию о состоянии сервиса", "grpc")
+
+Rel(landscape_service, handyman_service, "Получает статистику по платёжным системам", "http")
+Rel(landscape_service, rancher_service, "Получает статистику по участкам каждого rancher", "http")
+
+Rel(handyman_service, postgres, "Сохраняет и получает handyman, skill, account", "jdbc")
+Rel(rancher_service, postgres, "Сохраняет и получает rancher, field", "jdbc")
+Rel(landscape_service, postgres, "Сохраняет и получает user, order", "jdbc")
+
+SHOW_LEGEND()
+@enduml

@@ -1,0 +1,49 @@
+@startuml Component
+!include <C4/C4_Component>
+
+!include <office/Servers/database_server>
+
+AddContainerTag("service", $legendText="service container")
+AddContainerTag("db", $sprite="database_server", $legendText="database container")
+
+Person(admin, "Admin", "Администратор приложения")
+Person(handyman, "Handyman", "Исполнитель, предоставляющий сервис")
+Container(landscape_service, "LandscapeService", "Container: Java and SpringBoot", "Управление пользователями, назначение на работы, управление ценой за работы, проставление рейтинга, сбор статистики", $tags="service")
+ContainerDb(postgres, "Database", "Container: Postgis:15-3.3", "Хранит handyman, skill, account", $tags="db")
+
+Container_Boundary(handyman_boundary, "HandymanService") {
+    Component(handyman_controller, "HandymanController", "Component: Spring RestController", "Реализует CRUD операции для handyman")
+    Component(handyman_service, "HandymanService", "Component: Spring Service", "Реализует логику работы с handyman")
+    Component(user_service, "UserService", "Component: Spring Service", "Реализует логику работы с user")
+    Component(landscape_client, "LandscapeClient", "Component: FeignClient", "Реализует клиента для LandscapeService")
+    Component(handyman_repository, "HandymanRepository", "Component: JPA Repository", "Реализует логику работы с таблицей для handyman")
+    Component(account_controller, "AccountController", "Component: Spring RestController", "Предоставляет статистику по платёжным системам")
+    Component(account_service, "AccountService", "Component: Spring Service", "Реализует логику работы со статистикой по платёжным системам")
+    Component(account_repository, "AccountRepository", "Component: JPA Repository", "Реализует логику работы с таблицей для account")
+    Component(system_controller, "SystemController", "Component: Spring RestController", "Предоставляет информацию о состоянии системы")
+    Component(system_service, "SystemService", "Component: Spring Service", "Реализует логику работы с информацией о состоянии системы")
+    Component(status_service_impl, "status_service_impl", "Component: Spring Service", "Реализует логику заполнения ответа для grpc с информацией о состоянии системы")
+}
+
+Rel(handyman, handyman_controller, "Управляет своей учётной записью", "http")
+Rel(handyman_controller, handyman_service, " ")
+Rel(handyman_service, user_service, " ")
+Rel(user_service, landscape_client, " ")
+Rel(account_controller, account_service, " ")
+Rel(account_service, account_repository, " ")
+Rel(account_repository, postgres, "Ищет account")
+Rel(landscape_client, landscape_service, "CRUD user с типом handyman", "http")
+Rel(handyman_service, handyman_repository, " ")
+Rel(handyman_repository, postgres, "Сохраняет и получает handyman, skill, account", "jdbc")
+
+Rel(admin, system_controller, "Получает метрики", "http")
+Rel(system_controller, system_service, " ")
+
+Rel(status_service_impl, system_service, " ")
+
+Rel(landscape_service, status_service_impl, "Запрашивает информацию о состоянии сервиса", "grpc")
+
+Rel(landscape_service, account_controller, "Получает статистику по платёжным системам", "http")
+
+SHOW_LEGEND()
+@enduml

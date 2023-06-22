@@ -1,0 +1,169 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": false, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 0,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "ru.tinkoff.academy.landscape.controller.UserController",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+UserController2122485325[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)UserController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   service: UserService [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ create(createUserDto: CreateUserDto): User</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delete(id: UUID)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ get(id: UUID): User</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(id: UUID, createUserDto: CreateUserDto): User</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+UserMapper2129324402[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)UserMapper</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   modelMapper: ModelMapper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   userTypeRepository: UserTypeRepository [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ mapToEntity(createUserDto: CreateUserDto): User</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+UserRepository859109893[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)UserRepository</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+UserService1563819612[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)UserService</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   mapper: UserMapper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   repository: UserRepository [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ create(createUserDto: CreateUserDto): User</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delete(id: UUID)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ get(id: UUID): User</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(id: UUID, createUserDto: CreateUserDto): User</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+UserTypeRepository859109893[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)UserTypeRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getReferenceByName(type: String): UserType</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+'edges    
+UserController2122485325 -> UserService1563819612[label="service
+[0..1]"];
+UserMapper2129324402 -> UserTypeRepository859109893[label="userTypeRepository
+[0..1]"];
+UserService1563819612 -> UserMapper2129324402[label="mapper
+[0..1]"];
+UserService1563819612 -> UserRepository859109893[label="repository
+[0..1]"];
+    
+}
+@enduml

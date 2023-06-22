@@ -1,0 +1,196 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": false, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 0,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "ru.tinkoff.academy.handyman.controller.HandymanController",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+HandymanController256798652[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)HandymanController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   service: HandymanService [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ create(creatingHandymanDto: CreatingHandymanDto): HandymanDto</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delete(id: Long)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ get(id: Long): HandymanDto</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(id: Long, creatingHandymanDto: CreatingHandymanDto): HandymanDto</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+HandymanMapper771302815[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)HandymanMapper</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   modelMapper: ModelMapper [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ mapToDto(handyman: Handyman, user: User): HandymanDto</TD></TR>
+<TR><TD ALIGN="LEFT" >+ mapToEntity(updatingHandymanDto: UpdatingHandymanDto): Handyman</TD></TR>
+<TR><TD ALIGN="LEFT" >+ mapToEntity(innerAccountDto: InnerAccountDto): Account</TD></TR>
+<TR><TD ALIGN="LEFT" >+ mapToEntity(innerSkillDto: InnerSkillDto): Skill</TD></TR>
+<TR><TD ALIGN="LEFT" >+ mapToUserDto(updatingHandymanDto: UpdatingHandymanDto): UserDto</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+HandymanRepository1570170730[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)HandymanRepository</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+HandymanService1288950123[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)HandymanService</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   mapper: HandymanMapper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   repository: HandymanRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   userService: UserService [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ create(creatingHandymanDto: CreatingHandymanDto): HandymanDto</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delete(id: Long)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ get(id: Long): HandymanDto</TD></TR>
+<TR><TD ALIGN="LEFT" >- getHandyman(id: Long): Handyman</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(id: Long, updatingHandymanDto: UpdatingHandymanDto): HandymanDto</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+LandscapeClient1047654421[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)LandscapeClient</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ create(userDto: UserDto): User</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delete(id: UUID)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ get(id: UUID): User</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(id: UUID, userDto: UserDto): User</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+UserService1288950123[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)UserService</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   landscapeClient: LandscapeClient [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ create(userDto: UserDto): User</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delete(id: UUID)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ get(id: UUID): User</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(id: UUID, userDto: UserDto): User</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+'edges    
+HandymanController256798652 -> HandymanService1288950123[label="service
+[0..1]"];
+HandymanService1288950123 -> HandymanMapper771302815[label="mapper
+[0..1]"];
+HandymanService1288950123 -> HandymanRepository1570170730[label="repository
+[0..1]"];
+HandymanService1288950123 -> UserService1288950123[label="userService
+[0..1]"];
+UserService1288950123 -> LandscapeClient1047654421[label="landscapeClient
+[0..1]"];
+    
+}
+@enduml

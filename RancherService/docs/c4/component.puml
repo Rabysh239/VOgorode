@@ -1,0 +1,51 @@
+@startuml Component
+!include <C4/C4_Component>
+
+!include <office/Servers/database_server>
+
+AddContainerTag("service", $legendText="service container")
+AddContainerTag("db", $sprite="database_server", $legendText="database container")
+
+Person(admin, "Admin", "Администратор приложения")
+Person(rancher, "Rancher", "Владелец участков, заказывающий работу")
+Container(landscape_service, "LandscapeService", "Container: Java and SpringBoot", "Управление пользователями, назначение на работы, управление ценой за работы, проставление рейтинга, сбор статистики", $tags="service")
+ContainerDb(postgres, "Database", "Container: Postgis:15-3.3", "Хранит rancher, field", $tags="db")
+
+Container_Boundary(rancher_boundary, "RancherService") {
+    Component(rancher_controller, "RancherController", "Component: Spring RestController", "Реализует CRUD операции для rancher, получение статистики по участкам")
+    Component(rancher_service, "RancherService", "Component: Spring Service", "Реализует логику работы с rancher")
+    Component(user_service, "UserService", "Component: Spring Service", "Реализует логику работы с user")
+    Component(landscape_client, "LandscapeClient", "Component: FeignClient", "Реализует клиента для LandscapeService")
+    Component(rancher_repository, "RancherRepository", "Component: JPA Repository", "Реализует логику работы с таблицей для rancher")
+    Component(field_controller, "FieldController", "Component: Spring RestController", "Реализует CRUD операции для field")
+    Component(field_service, "FieldService", "Component: Spring Service", "Реализует логику работы с field")
+    Component(field_repository, "FieldRepository", "Component: JPA Repository", "Реализует логику работы с таблицей для field")
+    Component(system_controller, "SystemController", "Component: Spring RestController", "Предоставляет информацию о состоянии системы")
+    Component(system_service, "SystemService", "Component: Spring Service", "Реализует логику работы с информацией о состоянии системы")
+    Component(status_service_impl, "status_service_impl", "Component: Spring Service", "Реализует логику заполнения ответа для grpc с информацией о состоянии системы")
+}
+
+Rel(rancher, rancher_controller, "Управляет своей учётной записью", "http")
+Rel(rancher_controller, rancher_service, " ")
+Rel(rancher_service, user_service, " ")
+Rel(user_service, landscape_client, " ")
+Rel(landscape_client, landscape_service, "CRUD user с типом rancher", "http")
+Rel(rancher_service, rancher_repository, " ")
+Rel(rancher_repository, postgres, "Сохраняет и получает rancher, field", "jdbc")
+
+Rel(rancher, field_controller, "Управляет участками", "http")
+Rel(field_controller, field_service, " ")
+Rel(field_service, field_repository, " ")
+Rel(field_repository, postgres, "Сохраняет и получает field")
+
+Rel(admin, system_controller, "Получает метрики", "http")
+Rel(system_controller, system_service, " ")
+
+Rel(status_service_impl, system_service, " ")
+
+Rel(landscape_service, status_service_impl, "Запрашивает информацию о состоянии сервиса", "grpc")
+
+Rel(landscape_service, rancher_controller, "Получает статистику по участкам каждого rancher", "http")
+
+SHOW_LEGEND()
+@enduml
