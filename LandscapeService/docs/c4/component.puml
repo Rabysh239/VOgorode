@@ -1,0 +1,56 @@
+@startuml Component
+!include <C4/C4_Component>
+
+!include <office/Servers/database_server>
+
+AddContainerTag("service", $legendText="service container")
+AddContainerTag("db", $sprite="database_server", $legendText="database container")
+
+Person(admin, "Admin", "Администратор приложения")
+Person(handyman, "Handyman", "Исполнитель, предоставляющий сервис")
+Person(rancher, "Rancher", "Владелец участков, заказывающий работу")
+Container(handyman_service, "HandymanService", "Container: Java and SpringBoot", "Бэк для клиентской части, обслуживающий людей которые предоставляют сервис", $tags="service")
+Container(rancher_service, "RancherService", "Container: Java and SpringBoot", "Бэк обслуживающий участки, координаты, размеры поля, список требуемых работы и т.п.", $tags="service")
+ContainerDb(postgres, "Database", "Container: Postgis:15-3.3", "Хранит handyman user, order", $tags="db")
+
+Container_Boundary(landscape_boundary, "LandscapeService") {
+    Component(user_controller, "UserController", "Component: Spring RestController", "Реализует CRUD операции для user")
+    Component(user_service, "UserService", "Component: Spring Service", "Реализует логику работы с user")
+    Component(user_repository, "UserRepository", "Component: JPA Repository", "Реализует логику работы с таблицей для user")
+    Component(order_controller, "OrderController", "Component: Spring RestController", "Реализует CRUD операции для order")
+    Component(order_service, "OrderService", "Component: Spring Service", "Реализует логику работы с order")
+    Component(order_repository, "OrderRepository", "Component: JPA Repository", "Реализует логику работы с таблицей для order")
+    Component(statistic_controller, "StatisticController", "Component: Spring RestController", "Предоставляет информацию о статистике")
+    Component(statistic_service, "StatisticService", "Component: Spring Service", "Реализует логику работы со статистикой")
+    Component(system_controller, "SystemController", "Component: Spring RestController", "Предоставляет информацию о состоянии системы")
+    Component(system_service, "SystemService", "Component: Spring Service", "Реализует логику работы с информацией о состоянии системы")
+    Component(service_status_controller, "ServiceStatusController", "Component: Spring RestController", "Предоставляет информацию о состоянии cервисов")
+    Component(service_status_service, "ServiceStatusService", "Component: Spring Service", "Реализует логику сбора информации о состоянии сервисов")
+}
+
+Rel(handyman_service, user_controller, "CRUD user с типом handyman", "http")
+Rel(rancher_service, user_controller, "CRUD user с типом rancher", "http")
+Rel(user_controller, user_service, " ")
+Rel(user_service, user_repository, " ")
+Rel(user_repository, postgres, "Сохраняет и получает user", "jdbc")
+
+Rel(handyman, order_controller, "Просматривает заказы")
+Rel(rancher, order_controller, "Управляет заказами")
+Rel(order_controller, order_service, " ")
+Rel(order_service, order_repository, " ")
+Rel(order_repository, postgres, "Сохраняет и получает order", "jdbc")
+
+Rel(statistic_controller, statistic_service, " ")
+Rel(statistic_service, handyman_service, "Получает статистику по платёжным системам", "http")
+Rel(statistic_service, rancher_service, "Получает статистику по участкам каждого rancher", "grpc")
+
+Rel(admin, service_status_controller, "Смотрит состояние сервисов")
+Rel(service_status_controller, service_status_service, " ")
+Rel(service_status_service, handyman_service, "Запрашивает информацию о состоянии сервиса", "grpc")
+Rel(service_status_service, rancher_service, "Запрашивает информацию о состоянии сервиса", "grpc")
+
+Rel(admin, system_controller, "Получает метрики", "http")
+Rel(system_controller, system_service, " ")
+
+SHOW_LEGEND()
+@enduml

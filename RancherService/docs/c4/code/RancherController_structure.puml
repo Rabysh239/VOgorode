@@ -1,0 +1,215 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": false, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 0,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "ru.tinkoff.academy.rancher.controller.RancherController",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+FieldMapper1579938180[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)FieldMapper</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   modelMapper: ModelMapper [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ mapToEntity(fieldDto: InnerFieldDto): Field</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+LandscapeClient1856289786[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)LandscapeClient</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ create(userDto: UserDto): User</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delete(id: UUID)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ get(id: UUID): User</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(id: UUID, userDto: UserDto): User</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+RancherController249437783[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)RancherController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   service: RancherService [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ create(creatingRancherDto: CreatingRancherDto): RancherDto</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delete(id: Long)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ get(id: Long): RancherDto</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getStatistics(page: int, size: int): Page&lt;Statistic&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(id: Long, updatingRancherDto: UpdatingRancherDto): RancherDto</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+RancherMapper1579938180[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)RancherMapper</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   modelMapper: ModelMapper [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ mapToDto(rancher: Rancher, user: User): RancherDto</TD></TR>
+<TR><TD ALIGN="LEFT" >+ mapToEntity(updatingRancherDto: UpdatingRancherDto): Rancher</TD></TR>
+<TR><TD ALIGN="LEFT" >+ mapToUserDto(updatingRancherDto: UpdatingRancherDto): UserDto</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+RancherRepository1562809861[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)RancherRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getStatistics(pageable: Pageable): Page&lt;Statistic&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+RancherService586842662[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)RancherService</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   fieldMapper: FieldMapper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mapper: RancherMapper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   repository: RancherRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   userService: UserService [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ create(creatingRancherDto: CreatingRancherDto): RancherDto</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delete(id: Long)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ get(id: Long): RancherDto</TD></TR>
+<TR><TD ALIGN="LEFT" >- getRancher(id: Long): Rancher</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getStatistics(page: int, size: int): Page&lt;Statistic&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(id: Long, updatingRancherDto: UpdatingRancherDto): RancherDto</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+UserService586842662[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)UserService</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   landscapeClient: LandscapeClient [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ create(userDto: UserDto): User</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delete(id: UUID)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ get(id: UUID): User</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(id: UUID, userDto: UserDto): User</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+'edges    
+RancherController249437783 -> RancherService586842662[label="service
+[0..1]"];
+RancherService586842662 -> FieldMapper1579938180[label="fieldMapper
+[0..1]"];
+RancherService586842662 -> RancherMapper1579938180[label="mapper
+[0..1]"];
+RancherService586842662 -> RancherRepository1562809861[label="repository
+[0..1]"];
+RancherService586842662 -> UserService586842662[label="userService
+[0..1]"];
+UserService586842662 -> LandscapeClient1856289786[label="landscapeClient
+[0..1]"];
+    
+}
+@enduml

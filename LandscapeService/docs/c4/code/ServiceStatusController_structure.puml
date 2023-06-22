@@ -1,0 +1,184 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": false, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 0,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "ru.tinkoff.academy.landscape.controller.ServiceStatusController",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+GRPCProperties284101995[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)GRPCProperties</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   serviceNames: String[] [0..*]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ServiceStatus284085477[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ServiceStatus</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   artifact: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   group: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   host: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   name: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   status: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   version: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ builder(): ServiceStatusBuilder</TD></TR>
+<TR><TD ALIGN="LEFT" ># canEqual(other: Object): boolean</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ServiceStatusController2122485325[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ServiceStatusController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   serviceStatusService: ServiceStatusService [0..1]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ServiceStatusService1563819612[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ServiceStatusService</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   grpcChannelFactory: GrpcChannelFactory [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   grpcChannelsProperties: GrpcChannelsProperties [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   grpcProperties: GRPCProperties [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- getStatus(serviceName: String): ServiceStatus</TD></TR>
+<TR><TD ALIGN="LEFT" >- serviceNameMapper(rawName: String): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+StatusServiceBlockingStub1469845791[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)StatusServiceBlockingStub</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># build(channel: Channel, callOptions: CallOptions): StatusServiceBlockingStub</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getReadiness(request: Empty): ReadinessResponse</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getVersion(request: Empty): VersionResponse</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+StatusServiceGrpc2142778996[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)StatusServiceGrpc</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ newBlockingStub(channel: Channel): StatusServiceBlockingStub</TD></TR>
+<TR><TD ALIGN="LEFT" >+ newFutureStub(channel: Channel): StatusServiceFutureStub</TD></TR>
+<TR><TD ALIGN="LEFT" >+ newStub(channel: Channel): StatusServiceStub</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+'edges    
+ServiceStatusController2122485325 -> ServiceStatusService1563819612[label="serviceStatusService
+[0..1]"];
+ServiceStatusService1563819612 -> GRPCProperties284101995[label="grpcProperties
+[0..1]"];
+ServiceStatusService1563819612 -> ServiceStatus284085477[label="getStatus() -> builder()"];
+ServiceStatusService1563819612 -> StatusServiceGrpc2142778996[label="getStatus() -> newBlockingStub()"];
+    
+}
+@enduml
