@@ -2,21 +2,20 @@ package ru.tinkoff.academy.rancher.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
 @Data
-@Entity
-@Table(name = "ranchers")
+@Document(collection = "ranchers")
 public class Rancher {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false)
+    private String id;
     private UUID userId;
     @JsonIgnoreProperties(value = "rancher")
-    @OneToMany(mappedBy = "rancher", cascade = CascadeType.ALL)
+    @DocumentReference
     private List<Field> fields;
 }

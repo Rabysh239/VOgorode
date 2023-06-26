@@ -24,7 +24,7 @@ public class RancherController {
 
     @Timed
     @GetMapping("/{id}")
-    public RancherDto get(@PathVariable Long id) {
+    public RancherDto get(@PathVariable String id) {
         return service.get(id);
     }
 
@@ -35,13 +35,13 @@ public class RancherController {
 
     @Timed
     @PutMapping("/{id}")
-    public RancherDto update(@PathVariable Long id, @RequestBody UpdatingRancherDto updatingRancherDto) {
+    public RancherDto update(@PathVariable String id, @RequestBody UpdatingRancherDto updatingRancherDto) {
         return service.update(id, updatingRancherDto);
     }
 
     @Timed
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable String id) {
         service.delete(id);
     }
 }

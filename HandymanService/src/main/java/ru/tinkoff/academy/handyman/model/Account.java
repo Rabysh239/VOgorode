@@ -1,27 +1,21 @@
 package ru.tinkoff.academy.handyman.model;
 
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import ru.tinkoff.academy.handyman.data.PaymentSystem;
 
-import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Data
-@Entity
-@Table(name = "accounts")
+@Document(collection = "accounts")
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @ManyToOne
-    @JoinColumn(nullable = false)
+    private String id;
+    @DocumentReference
     private Handyman handyman;
-    @Column(nullable = false)
     private String cardNumber;
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private PaymentSystem paymentSystem;
-    @CreationTimestamp
-    private Timestamp created;
+    private Date created = new Date();
 }

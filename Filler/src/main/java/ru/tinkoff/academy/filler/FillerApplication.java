@@ -3,9 +3,6 @@ package ru.tinkoff.academy.filler;
 import feign.RetryableException;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.codec.binary.Base64;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Polygon;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -174,7 +171,7 @@ public class FillerApplication implements ApplicationRunner {
                 .address(generateAddress())
                 .latitude(genLatitude())
                 .longitude(genLatitude() * 2)
-                .area(generateGeometry())
+                .area(random.nextDouble(20, 100))
                 .build()
         ).toList();
     }
@@ -196,18 +193,5 @@ public class FillerApplication implements ApplicationRunner {
         sb.append(streetNumber).append(" ").append(streetName).append(" ").append(streetType).append(", ");
         sb.append(city).append(", ").append(state).append(" ").append(zipCode);
         return sb.toString();
-    }
-
-    private static Polygon generateGeometry() {
-        Random random = new Random();
-        GeometryFactory factory = new GeometryFactory();
-        Coordinate[] coords = new Coordinate[5];
-        for (int i = 0; i < 5; i++) {
-            double x = random.nextDouble(100);
-            double y = random.nextDouble(100);
-            coords[i] = new Coordinate(x, y);
-        }
-        coords[4] = coords[0];
-        return factory.createPolygon(coords);
     }
 }

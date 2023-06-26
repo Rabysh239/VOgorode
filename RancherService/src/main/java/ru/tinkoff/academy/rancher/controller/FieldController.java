@@ -18,17 +18,17 @@ public class FieldController {
     }
 
     @GetMapping("/{id}")
-    public Field get(@PathVariable Long id) {
+    public Field get(@PathVariable String id) {
         return service.get(id);
     }
 
     @PutMapping("/{id}")
-    public Field update(@PathVariable Long id, @RequestBody FieldDto fieldDto) {
+    public Field update(@PathVariable String id, @RequestBody FieldDto fieldDto) {
         return service.update(id, fieldDto);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable String id) {
         service.delete(id);
     }
 }

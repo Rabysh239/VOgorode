@@ -18,14 +18,6 @@ spring:
   data:
     mongodb:
       uri: ${MONGO_DB_URI}
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
-  jpa:
-    properties:
-      hibernate:
-        physical_naming_strategy: com.vladmihalcea.hibernate.type.util.CamelCaseToSnakeCaseNamingStrategy
 
 landscape:
   url: ${LANDSCAPE_SERVICE_URL}
