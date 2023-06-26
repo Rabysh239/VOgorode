@@ -5,29 +5,25 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.academy.rancher.data.Statistic;
 import ru.tinkoff.academy.rancher.dto.CreatingRancherDto;
 import ru.tinkoff.academy.rancher.dto.RancherDto;
 import ru.tinkoff.academy.rancher.dto.UpdatingRancherDto;
 import ru.tinkoff.academy.rancher.dto.UserDto;
 import ru.tinkoff.academy.rancher.exception.EntityNotFoundException;
-import ru.tinkoff.academy.rancher.mapper.FieldMapper;
 import ru.tinkoff.academy.rancher.mapper.RancherMapper;
-import ru.tinkoff.academy.rancher.model.Field;
 import ru.tinkoff.academy.rancher.model.Rancher;
 import ru.tinkoff.academy.rancher.model.User;
 import ru.tinkoff.academy.rancher.repository.RancherRepository;
-
-import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class RancherService {
     private final RancherRepository repository;
     private final RancherMapper mapper;
-    private final FieldMapper fieldMapper;
     private final UserService userService;
+    private final FieldService fieldService;
 
     @Transactional
     public RancherDto create(CreatingRancherDto creatingRancherDto) {
@@ -35,14 +31,12 @@ public class RancherService {
         User user = userService.create(userDto);
         Rancher rancher = mapper.mapToEntity(creatingRancherDto);
         rancher.setUserId(user.getId());
-        List<Field> fields = creatingRancherDto.getFields().stream().map(fieldMapper::mapToEntity).toList();
-        fields.forEach(it -> it.setRancher(rancher));
-        rancher.setFields(fields);
         Rancher savedRancher = repository.save(rancher);
+        creatingRancherDto.getFields().forEach(f -> fieldService.create(f, savedRancher.getId()));
         return mapper.mapToDto(savedRancher, user);
     }
 
-    public RancherDto get(Long id) {
+    public RancherDto get(String id) {
         Rancher rancher = getRancher(id);
         User user = userService.get(rancher.getUserId());
         return mapper.mapToDto(rancher, user);
@@ -53,20 +47,20 @@ public class RancherService {
         return repository.getStatistics(pageRequest);
     }
 
-    public RancherDto update(Long id, UpdatingRancherDto updatingRancherDto) {
+    public RancherDto update(String id, UpdatingRancherDto updatingRancherDto) {
         Rancher rancher = getRancher(id);
         UserDto userDto = mapper.mapToUserDto(updatingRancherDto);
         User user = userService.update(rancher.getUserId(), userDto);
         return mapper.mapToDto(rancher, user);
     }
 
-    public void delete(Long id) {
+    public void delete(String id) {
         Rancher rancher = getRancher(id);
         userService.delete(rancher.getUserId());
         repository.deleteById(id);
     }
 
-    private Rancher getRancher(Long id) {
+    private Rancher getRancher(String id) {
         return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("rancher", id));
     }
 }

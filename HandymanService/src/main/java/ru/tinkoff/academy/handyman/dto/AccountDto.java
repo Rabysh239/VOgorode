@@ -5,7 +5,7 @@ import ru.tinkoff.academy.handyman.data.PaymentSystem;
 
 @Data
 public class AccountDto {
-    private Long handymanId;
+    private String handymanId;
     private String cardNumber;
     private PaymentSystem paymentSystem;
 }

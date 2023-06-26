@@ -1,19 +1,16 @@
 package ru.tinkoff.academy.handyman.model;
 
 import lombok.Data;
-
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 @Data
-@Entity
-@Table(name = "skills")
+@Document(collection = "skills")
 public class Skill {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false)
+    private String id;
     private String name;
-    @ManyToOne
-    @JoinColumn(nullable = false)
+    @DocumentReference
     private Handyman handyman;
 }

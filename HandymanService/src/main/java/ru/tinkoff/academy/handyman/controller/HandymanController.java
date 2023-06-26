@@ -21,19 +21,19 @@ public class HandymanController {
 
     @Timed
     @GetMapping("/{id}")
-    public HandymanDto get(@PathVariable Long id) {
+    public HandymanDto get(@PathVariable String id) {
         return service.get(id);
     }
 
     @Timed
     @PutMapping("/{id}")
-    public HandymanDto update(@PathVariable Long id, @RequestBody CreatingHandymanDto creatingHandymanDto) {
+    public HandymanDto update(@PathVariable String id, @RequestBody CreatingHandymanDto creatingHandymanDto) {
         return service.update(id, creatingHandymanDto);
     }
 
     @Timed
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable String id) {
         service.delete(id);
     }
 }

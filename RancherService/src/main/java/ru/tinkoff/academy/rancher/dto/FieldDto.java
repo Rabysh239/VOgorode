@@ -6,5 +6,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class FieldDto extends InnerFieldDto {
-    private Long rancherId;
+    private String rancherId;
 }
